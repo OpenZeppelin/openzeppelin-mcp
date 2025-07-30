@@ -17,7 +17,9 @@ jobs:
       contents: read
       packages: write
     env:
-     REGISTRY: 301065321042.dkr.ecr.us-east-1.amazonaws.com
+      REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+      ROLE_FOR_OIDC: "${{ secrets.ROLE_FOR_OIDC }}"
+      ROLE_TO_ASSUME: "${{ secrets.ROLE_TO_ASSUME }}"
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481 # v2.11.0
@@ -37,6 +39,9 @@ jobs:
 
       - name: Set up AWS credentials via OIDC and role chaining
         uses: ./.github/actions/oidc
+        with:
+          role-for-oidc: ${{ env.ROLE_FOR_OIDC }}
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
@@ -59,11 +64,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push
     env:
-      ROLE_FOR_OIDC: "arn:aws:iam::997179694723:role/github-actions-research-account-oidc-role"
-      ROLE_TO_ASSUME: "arn:aws:iam::301065321042:role/GithubOIDCResearchAccountRole"
-      ECS_CLUSTER: "mcp-prod-cluster"
-      ECS_SERVICE: "mcp-prod-service"
-      AWS_REGION: "us-east-1"
+      ROLE_FOR_OIDC: "${{ secrets.ROLE_FOR_OIDC }}"
+      ROLE_TO_ASSUME: "${{ secrets.ROLE_TO_ASSUME }}"
+      ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+      ECS_SERVICE: ${{ vars.ECS_SERVICE }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
     permissions:
       contents: read
       id-token: write
@@ -73,6 +78,9 @@ jobs:
 
       - name: Set up AWS credentials via OIDC and role chaining
         uses: ./.github/actions/oidc
+        with:
+          role-for-oidc: ${{ env.ROLE_FOR_OIDC }}
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
       
       - name: AWS ECS force new deployment
         run: |
