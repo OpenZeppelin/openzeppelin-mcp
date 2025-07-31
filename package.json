@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@next/third-parties": "^15.4.4",
-    "@openzeppelin/contracts-mcp": "^0.0.5",
+    "@openzeppelin/contracts-mcp": "^0.0.6",
     "mcp-handler": "^1.0.1",
     "next": "^15.3.3",
     "react": "^19.1.0",
