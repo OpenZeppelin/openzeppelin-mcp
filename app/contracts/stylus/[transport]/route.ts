@@ -1,5 +1,5 @@
 import { createMcpHandler } from "mcp-handler";
-import { registerStylusTools } from "@openzeppelin/contracts-mcp/src/stylus/tools";
+import { registerStylusTools } from "@openzeppelin/contracts-mcp";
 import { getTitleText } from "@/contracts/prompts";
 import { getInstructionsText } from "@/contracts/prompts";
 import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
