@@ -9,7 +9,6 @@ import {
 import { useState } from "react";
 import { CursorConfig } from "@/components/client-config-instructions/CursorConfig";
 import { VSCodeConfig } from "@/components/client-config-instructions/VSCodeConfig";
-import { ClaudeDesktopConfig } from "@/components/client-config-instructions/ClaudeDesktopConfig";
 import { ClaudeCodeConfig } from "@/components/client-config-instructions/ClaudeCodeConfig";
 import { WindsurfConfig } from "@/components/client-config-instructions/WindsurfConfig";
 import { GeminiCliConfig } from "@/components/client-config-instructions/GeminiCliConfig";
@@ -26,7 +25,6 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
       icon: CursorIcon,
     },
     { id: "vscode", label: "VS Code", icon: VSCodeIcon },
-    { id: "claude-desktop", label: "Claude Desktop", icon: ClaudeIcon },
     { id: "claude-code", label: "Claude Code", icon: ClaudeIcon },
     { id: "windsurf", label: "Windsurf", icon: WindsurfIcon },
     { id: "gemini-cli", label: "Gemini CLI", icon: GeminiIcon },
@@ -44,8 +42,6 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
         );
       case "vscode":
         return <VSCodeConfig name={mcp.name} url={mcp.url} />;
-      case "claude-desktop":
-        return <ClaudeDesktopConfig name={mcp.name} url={mcp.url} />;
       case "claude-code":
         return <ClaudeCodeConfig name={mcp.name} url={mcp.url} />;
       case "windsurf":
