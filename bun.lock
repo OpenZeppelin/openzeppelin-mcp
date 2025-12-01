@@ -4,7 +4,8 @@
     "": {
       "dependencies": {
         "@next/third-parties": "^15.4.4",
-        "@openzeppelin/contracts-mcp": "^0.2.0",
+        "@openzeppelin/contracts-mcp": "^0.4.4",
+        "@openzeppelin/wizard-uniswap-hooks": "^0.1.0",
         "mcp-handler": "^1.0.1",
         "next": "^15.3.3",
         "react": "^19.1.0",
@@ -223,17 +224,25 @@
 
     "@next/third-parties": ["@next/third-parties@15.4.4", "", { "dependencies": { "third-party-capital": "1.0.20" }, "peerDependencies": { "next": "^13.0.0 || ^14.0.0 || ^15.0.0", "react": "^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0" } }, "sha512-0GIEDSxfl9hTU4Ne1TVr/lZUS1wGhDPB4gt6TNvLBA3Fioum+qZRoPt3fiOW9hHQynyLsojglRDaB97T92h0Og=="],
 
-    "@openzeppelin/contracts-mcp": ["@openzeppelin/contracts-mcp@0.2.0", "", { "dependencies": { "@modelcontextprotocol/sdk": "^1.11.1", "@openzeppelin/wizard": "^0.8.0", "@openzeppelin/wizard-cairo": "^2.1.0", "@openzeppelin/wizard-common": "^0.1.1", "@openzeppelin/wizard-stellar": "^0.4.2", "@openzeppelin/wizard-stylus": "^0.2.0" }, "bin": { "contracts-mcp": "dist/cli.js" } }, "sha512-yYo6QkQ8d99/z0bvWP+32xs77LtQOFb8o77tpkT2suC8jZCXKsAMsCylRmH6ytg0VkrElkWjbJAFYghfViMsnQ=="],
+    "@noble/ciphers": ["@noble/ciphers@1.3.0", "", {}, "sha512-2I0gnIVPtfnMw9ee9h1dJG7tp81+8Ob3OJb3Mv37rx5L40/b0i7djjCVvGOVqc9AEIQyvyu1i6ypKdFw8R8gQw=="],
 
-    "@openzeppelin/wizard": ["@openzeppelin/wizard@0.8.0", "", {}, "sha512-PYWXuHtejl1UBeGTJz/YUic4ZPVIi1SsrFC774VFICEXjRPfvNj3H/mG32cCXQfRX5qHZykQsJfJHhlvmTzYWQ=="],
+    "@noble/curves": ["@noble/curves@1.9.0", "", { "dependencies": { "@noble/hashes": "1.8.0" } }, "sha512-7YDlXiNMdO1YZeH6t/kvopHHbIZzlxrCV9WLqCY6QhcXOoXiNCMDqJIglZ9Yjx5+w7Dz30TITFrlTjnRg7sKEg=="],
+
+    "@noble/hashes": ["@noble/hashes@1.8.0", "", {}, "sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A=="],
+
+    "@openzeppelin/contracts-mcp": ["@openzeppelin/contracts-mcp@0.4.4", "", { "dependencies": { "@modelcontextprotocol/sdk": "^1.11.1", "@openzeppelin/wizard": "^0.10.4", "@openzeppelin/wizard-cairo": "^2.1.0", "@openzeppelin/wizard-common": "^0.3.3", "@openzeppelin/wizard-stellar": "^0.4.4", "@openzeppelin/wizard-stylus": "^0.2.0" }, "bin": { "contracts-mcp": "dist/cli.js" } }, "sha512-cusg/7rV+n2kgEnmOt65Lrx+q8L4Ldjijss52TiPEEFkHr/nktypEI2mcngGj9CLGZ8cJ9d/QsRMTYpWmYZjTg=="],
+
+    "@openzeppelin/wizard": ["@openzeppelin/wizard@0.10.4", "", { "dependencies": { "ethereum-cryptography": "^3.2.0" } }, "sha512-EK7VyUzfyvzToN9L/oQHX2WZsaxmiX217ZkdiRvOLStPD2NMnMlsjDJnClJ7OnCTLrn1IRHFntoOhjp0m6c8zg=="],
 
     "@openzeppelin/wizard-cairo": ["@openzeppelin/wizard-cairo@2.1.0", "", {}, "sha512-yh1USzg4SWMr4DKkwmv8TDqTp9UwUASlNymo4kLSQAMBN5FhTTfdWBgrgVd5iaEdmeGQTm9DyKqjGYxZYLicsQ=="],
 
-    "@openzeppelin/wizard-common": ["@openzeppelin/wizard-common@0.1.1", "", {}, "sha512-39H7vE05tffA7mC8V84R3ZQ0FQDbOiyUyMed6SJ3GDUkanQoCtIsaWLskFCAEYx1PBOVYu+UolacQvgvw1uCJg=="],
+    "@openzeppelin/wizard-common": ["@openzeppelin/wizard-common@0.3.3", "", {}, "sha512-M8l0KME9xUurDPma/n6j3m7abYuk8fi0wKuCHYG026XpW7WJJqAkg9X2ytFtKe6JQA6E5DJiQ5yzt24BFrnnSw=="],
 
-    "@openzeppelin/wizard-stellar": ["@openzeppelin/wizard-stellar@0.4.2", "", {}, "sha512-8t1Swea7dvC1lCPb1YvFF9AqroqQJ47QBpLpMxevaoLi5avNMbKln2hkGCNittkGgUReaS2i4TbYjxkjHIJOyA=="],
+    "@openzeppelin/wizard-stellar": ["@openzeppelin/wizard-stellar@0.4.4", "", {}, "sha512-vze5PA51AYGiHcsaLbMEAQgoT6jRc3PRGMQlwYL6l39o5+oKHe615WDaKZvoLPHNkjwhb2GDnwQ/CHLsGH9qOg=="],
 
     "@openzeppelin/wizard-stylus": ["@openzeppelin/wizard-stylus@0.2.0", "", {}, "sha512-Yzc3x9uc/QJU4zY4xKqncbY3sP9p6QqKsQeL4tR3BVdjh45dcbJs8NBQE/Zhh4K6xmFkHmsPstOJr4OzZhfbPg=="],
+
+    "@openzeppelin/wizard-uniswap-hooks": ["@openzeppelin/wizard-uniswap-hooks@0.1.0", "", { "dependencies": { "@openzeppelin/wizard": "^0.10.4" } }, "sha512-LyKmtep5njBB+qU5BvdPHvEaUtfiCymg7xGneG/kCnYOMwm60zXDLnw90Fr+cRFV295c8Ne0mGAOMmtHvAEI4A=="],
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 
@@ -250,6 +259,12 @@
     "@redis/search": ["@redis/search@1.2.0", "", { "peerDependencies": { "@redis/client": "^1.0.0" } }, "sha512-tYoDBbtqOVigEDMAcTGsRlMycIIjwMCgD8eR2t0NANeQmgK/lvxNAvYyb6bZDD4frHRhIHkJu2TBRvB0ERkOmw=="],
 
     "@redis/time-series": ["@redis/time-series@1.1.0", "", { "peerDependencies": { "@redis/client": "^1.0.0" } }, "sha512-c1Q99M5ljsIuc4YdaCwfUEXsofakb9c8+Zse2qxTadu8TalLXuAESzLvFAvNVbkmSlvlzIQOLpBCmWI9wTOt+g=="],
+
+    "@scure/base": ["@scure/base@1.2.6", "", {}, "sha512-g/nm5FgUa//MCj1gV09zTJTaM6KBAHqLN907YVQqf7zC49+DcO4B1so4ZX07Ef10Twr6nuqYEH9GEggFXA4Fmg=="],
+
+    "@scure/bip32": ["@scure/bip32@1.7.0", "", { "dependencies": { "@noble/curves": "~1.9.0", "@noble/hashes": "~1.8.0", "@scure/base": "~1.2.5" } }, "sha512-E4FFX/N3f4B80AKWp5dP6ow+flD1LQZo/w8UnLGYZO674jS6YnYeepycOOksv+vLPSpgN35wgKgy+ybfTb2SMw=="],
+
+    "@scure/bip39": ["@scure/bip39@1.6.0", "", { "dependencies": { "@noble/hashes": "~1.8.0", "@scure/base": "~1.2.5" } }, "sha512-+lF0BbLiJNwVlev4eKelw1WWLaiKXw7sSl8T6FvBlWkdX+94aGJ4o8XjUdlyhTCjd8c+B3KT3JfS8P0bLRNU6A=="],
 
     "@sinclair/typebox": ["@sinclair/typebox@0.34.37", "", {}, "sha512-2TRuQVgQYfy+EzHRTIvkhv2ADEouJ2xNS/Vq+W5EuuewBdOrvATvljZTxHWZSTYr2sTjTHpGvucaGAt67S2akw=="],
 
@@ -506,6 +521,8 @@
     "esprima": ["esprima@4.0.1", "", { "bin": { "esparse": "./bin/esparse.js", "esvalidate": "./bin/esvalidate.js" } }, "sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A=="],
 
     "etag": ["etag@1.8.1", "", {}, "sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg=="],
+
+    "ethereum-cryptography": ["ethereum-cryptography@3.2.0", "", { "dependencies": { "@noble/ciphers": "1.3.0", "@noble/curves": "1.9.0", "@noble/hashes": "1.8.0", "@scure/bip32": "1.7.0", "@scure/bip39": "1.6.0" } }, "sha512-Urr5YVsalH+Jo0sYkTkv1MyI9bLYZwW8BENZCeE1QYaTHETEYx0Nv/SVsWkSqpYrzweg6d8KMY1wTjH/1m/BIg=="],
 
     "eventsource": ["eventsource@3.0.7", "", { "dependencies": { "eventsource-parser": "^3.0.1" } }, "sha512-CRT1WTyuQoD771GW56XEZFQ/ZoSfWid1alKGDYMmkt2yl8UXrVR4pspqWNEcqKvVIzg6PAltWjxcSSPrboA4iA=="],
 

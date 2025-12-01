@@ -10,6 +10,7 @@ import {
   CairoIcon,
   StellarIcon,
   StylusIcon,
+  UniswapHooksIcon,
 } from "@/components/icons";
 import { ConfigModal } from "@/components/ConfigModal";
 
@@ -133,6 +134,14 @@ export default function HomePage() {
       description:
         "Generate Stylus secure smart contracts based on OpenZeppelin templates",
       url: `${BASE_URL}contracts/stylus/mcp`,
+      npmMcpPackage: "@openzeppelin/contracts-mcp",
+    },
+    {
+      name: "Uniswap Hooks",
+      icon: UniswapHooksIcon,
+      description:
+        "Generate Uniswap Hooks secure smart contracts based on OpenZeppelin templates",
+      url: `${BASE_URL}contracts/uniswap-hooks/mcp`,
       npmMcpPackage: "@openzeppelin/contracts-mcp",
     },
   ];

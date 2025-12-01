@@ -16,6 +16,7 @@ The following MCP servers are provided:
 - Cairo Contracts
 - Stellar Contracts
 - Stylus Contracts
+- OpenZeppelin Uniswap Hooks
 
 These servers are hosted versions of the [OpenZeppelin Contracts MCP](https://github.com/OpenZeppelin/contracts-wizard/blob/master/packages/mcp/README.md) package, which can also be run locally by following the instructions in the linked readme.
 
