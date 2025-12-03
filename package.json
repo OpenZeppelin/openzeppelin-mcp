@@ -7,22 +7,22 @@
     "test": "jest"
   },
   "dependencies": {
-    "@next/third-parties": "^15.4.4",
+    "@next/third-parties": "^16.0.7",
     "@openzeppelin/contracts-mcp": "^0.4.4",
     "@openzeppelin/wizard-uniswap-hooks": "^0.1.0",
     "mcp-handler": "^1.0.4",
-    "next": "^15.3.3",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "next": "^16.0.7",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/node": "24.0.3",
-    "@types/react": "19.1.8",
-    "jest": "^30.0.4",
-    "next-test-api-route-handler": "^4.0.16",
-    "ts-jest": "^29.4.0",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.7",
+    "jest": "^30.2.0",
+    "next-test-api-route-handler": "^5.0.3",
+    "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
-    "typescript": "5.8.3"
+    "typescript": "5.9.3"
   }
 }
