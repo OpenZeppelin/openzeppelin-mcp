@@ -8,8 +8,7 @@
   },
   "dependencies": {
     "@next/third-parties": "^16.0.7",
-    "@openzeppelin/contracts-mcp": "^0.4.4",
-    "@openzeppelin/wizard-uniswap-hooks": "^0.1.0",
+    "@openzeppelin/contracts-mcp": "^0.4.5",
     "mcp-handler": "^1.0.4",
     "next": "^16.0.7",
     "react": "^19.2.1",
