@@ -19,7 +19,6 @@
     "@types/node": "24.10.1",
     "@types/react": "19.2.7",
     "jest": "^30.2.0",
-    "next-test-api-route-handler": "^5.0.3",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript": "5.9.3"
