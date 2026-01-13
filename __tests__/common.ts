@@ -58,3 +58,15 @@ export function parseJsonData(responseText: string): JSON {
   const jsonString = dataLine.substring(5);
   return JSON.parse(jsonString);
 }
+
+export function createRequest(endPoint, requestConfig: {
+  method: string;
+  headers: Record<string, string>;
+  body?: string;
+}): Request {
+  return new Request(endPoint, {
+    method: requestConfig.method,
+    headers: requestConfig.headers,
+    body: requestConfig.body,
+  });
+}

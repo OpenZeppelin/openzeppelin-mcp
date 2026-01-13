@@ -4,6 +4,7 @@ import {
   TEST_CLIENT_INITIALIZED_REQUEST,
   TEST_CLIENT_TOOLS_LIST_REQUEST,
   parseJsonData,
+  createRequest,
 } from "../common";
 import { getTitleText, getInstructionsText } from "@/contracts/prompts";
 import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
@@ -14,21 +15,10 @@ const STELLAR_TOOLS_NAMES = [
   "stellar-stablecoin",
 ];
 
-// Helper function to create Request objects
-function createRequest(requestConfig: {
-  method: string;
-  headers: Record<string, string>;
-  body?: string;
-}): Request {
-  return new Request("http://localhost:3000/contracts/stellar/mcp", {
-    method: requestConfig.method,
-    headers: requestConfig.headers,
-    body: requestConfig.body,
-  });
-}
+const STELLAR_ENDPOINT = "http://localhost:3000/contracts/stellar/mcp";
 
 it("GET Method not allowed", async () => {
-  const request = createRequest({
+  const request = createRequest(STELLAR_ENDPOINT, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -42,17 +32,21 @@ it("GET Method not allowed", async () => {
 
 it("Server should initialize a client session and serve Stellar tools", async () => {
   // Initialize the client session
-  const requestInitialize = createRequest(TEST_CLIENT_INITIALIZATION_REQUEST);
+  const requestInitialize = createRequest(
+    STELLAR_ENDPOINT,
+    TEST_CLIENT_INITIALIZATION_REQUEST
+  );
   const responseInitialize = await POST(requestInitialize);
 
-  const requestInitialized = createRequest(TEST_CLIENT_INITIALIZED_REQUEST);
+  const requestInitialized = createRequest(
+    STELLAR_ENDPOINT,
+    TEST_CLIENT_INITIALIZED_REQUEST
+  );
   const responseInitialized = await POST(requestInitialized);
   expect(responseInitialized.ok).toBe(true);
 
   // Assert title, version and instructions
-  const responseInitializeText = parseJsonData(
-    await responseInitialize.text()
-  );
+  const responseInitializeText = parseJsonData(await responseInitialize.text());
   expect(getTitleText("Stellar")).toBe(
     responseInitializeText["result"]["serverInfo"]["name"]
   );
@@ -64,7 +58,10 @@ it("Server should initialize a client session and serve Stellar tools", async ()
   );
 
   // Assert that available tools are the Stellar tools
-  const requestToolsList = createRequest(TEST_CLIENT_TOOLS_LIST_REQUEST);
+  const requestToolsList = createRequest(
+    STELLAR_ENDPOINT,
+    TEST_CLIENT_TOOLS_LIST_REQUEST
+  );
   const responseToolsList = await POST(requestToolsList);
   const toolsList = parseJsonData(await responseToolsList.text())["result"][
     "tools"
