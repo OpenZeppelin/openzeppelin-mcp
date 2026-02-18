@@ -1,3 +1,5 @@
+import { CopyButton } from "@/components/CopyButton";
+
 function AddToCursorButton({ size = 32, name, url, currentTheme = "light" }) {
   const configJson = {
     type: "streamable-http",
@@ -68,6 +70,7 @@ export function CursorConfig({ name, url, currentTheme }) {
             <span></span>
           </div>
           <div className="code-filename">{config.filename}</div>
+          <CopyButton text={config.code} />
         </div>
         <pre className="code-content">
           <code>{config.code}</code>

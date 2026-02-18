@@ -1,3 +1,5 @@
+import { CopyButton } from "@/components/CopyButton";
+
 export function CodexConfig({ name, url }) {
   const serverName = `OpenZeppelin${name.replace(/ /g, "")}`;
   const config = {
@@ -17,6 +19,7 @@ export function CodexConfig({ name, url }) {
               <span></span>
             </div>
             <div className="code-filename"></div>
+            <CopyButton text={config.code} />
           </div>
           <pre className="code-content">
             <code>{config.code}</code>

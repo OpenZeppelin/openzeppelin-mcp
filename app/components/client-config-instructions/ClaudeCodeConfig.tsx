@@ -1,3 +1,5 @@
+import { CopyButton } from "@/components/CopyButton";
+
 export function ClaudeCodeConfig({ name, url }) {
   const config = {
     code: `claude mcp add -t http OpenZeppelin${name.replace(/ /g, "")} ${url}`,
@@ -16,6 +18,7 @@ export function ClaudeCodeConfig({ name, url }) {
               <span></span>
             </div>
             <div className="code-filename"></div>
+            <CopyButton text={config.code} />
           </div>
           <pre className="code-content">
             <code>{config.code}</code>

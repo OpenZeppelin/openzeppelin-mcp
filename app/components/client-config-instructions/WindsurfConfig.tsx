@@ -1,3 +1,5 @@
+import { CopyButton } from "@/components/CopyButton";
+
 export function WindsurfConfig({ name, url, currentTheme }) {
   const config = {
     filename: "~/.codeium/windsurf/mcp_config.json",
@@ -40,6 +42,7 @@ export function WindsurfConfig({ name, url, currentTheme }) {
             <span></span>
           </div>
           <div className="code-filename">{config.filename}</div>
+          <CopyButton text={config.code} />
         </div>
         <pre className="code-content">
           <code>{config.code}</code>
