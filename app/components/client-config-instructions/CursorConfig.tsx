@@ -7,9 +7,7 @@ function AddToCursorButton({ size = 32, name, url, currentTheme = "light" }) {
   const encodedConfig = btoa(JSON.stringify(configJson));
   return (
     <a
-      href={`https://cursor.com/install-mcp?name=${name}&config=${encodedConfig}`}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={`cursor://anysphere.cursor-deeplink/mcp/install?name=${name}&config=${encodedConfig}`}
     >
       <img
         src={`https://cursor.com/deeplink/mcp-install-${
