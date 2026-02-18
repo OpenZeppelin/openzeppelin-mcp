@@ -5,11 +5,13 @@ import {
   ClaudeIcon,
   WindsurfIcon,
   GeminiIcon,
+  CodexIcon,
 } from "@/components/icons";
 import { useState } from "react";
 import { CursorConfig } from "@/components/client-config-instructions/CursorConfig";
 import { VSCodeConfig } from "@/components/client-config-instructions/VSCodeConfig";
 import { ClaudeCodeConfig } from "@/components/client-config-instructions/ClaudeCodeConfig";
+import { CodexConfig } from "@/components/client-config-instructions/CodexConfig";
 import { WindsurfConfig } from "@/components/client-config-instructions/WindsurfConfig";
 import { GeminiCliConfig } from "@/components/client-config-instructions/GeminiCliConfig";
 
@@ -20,6 +22,7 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
 
   const tabs = [
     { id: "claude-code", label: "Claude Code", icon: ClaudeIcon },
+    { id: "codex", label: "Codex", icon: CodexIcon },
     {
       id: "cursor",
       label: "Cursor",
@@ -44,6 +47,8 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
         return <VSCodeConfig name={mcp.name} url={mcp.url} />;
       case "claude-code":
         return <ClaudeCodeConfig name={mcp.name} url={mcp.url} />;
+      case "codex":
+        return <CodexConfig name={mcp.name} url={mcp.url} />;
       case "windsurf":
         return (
           <WindsurfConfig
