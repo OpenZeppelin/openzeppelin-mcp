@@ -1,5 +1,5 @@
 import { createMcpHandler } from "mcp-handler";
-import { registerConfidentialTools } from "@openzeppelin/contracts-mcp/dist/confidential/tools";
+import { registerConfidentialTools } from "@openzeppelin/contracts-mcp";
 import { getTitleText } from "@/contracts/prompts";
 import { getInstructionsText } from "@/contracts/prompts";
 import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
