@@ -52,7 +52,7 @@ export function CursorConfig({ name, url, currentTheme }) {
             <strong>Cmd + Shift + J</strong> to open Cursor settings
           </li>
           <li>
-            Select <strong>Tools & Integrations</strong>
+            Select <strong>Tools & MCP</strong>
           </li>
           <li>
             Click <strong>New MCP Server</strong>

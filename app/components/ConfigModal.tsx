@@ -16,17 +16,17 @@ import { GeminiCliConfig } from "@/components/client-config-instructions/GeminiC
 export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
   if (!isOpen || !mcp) return null;
 
-  const [activeTab, setActiveTab] = useState("cursor");
+  const [activeTab, setActiveTab] = useState("claude-code");
 
   const tabs = [
+    { id: "claude-code", label: "Claude Code", icon: ClaudeIcon },
     {
       id: "cursor",
       label: "Cursor",
       icon: CursorIcon,
     },
-    { id: "vscode", label: "VS Code", icon: VSCodeIcon },
-    { id: "claude-code", label: "Claude Code", icon: ClaudeIcon },
     { id: "windsurf", label: "Windsurf", icon: WindsurfIcon },
+    { id: "vscode", label: "VS Code", icon: VSCodeIcon },
     { id: "gemini-cli", label: "Gemini CLI", icon: GeminiIcon },
   ];
 
