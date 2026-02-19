@@ -8,6 +8,7 @@ import {
   GitHubIcon,
   SolidityIcon,
   CairoIcon,
+  ConfidentialIcon,
   StellarIcon,
   StylusIcon,
   UniswapHooksIcon,
@@ -118,6 +119,14 @@ export default function HomePage() {
       description:
         "Generate Cairo secure smart contracts based on OpenZeppelin templates",
       url: `${BASE_URL}contracts/cairo/mcp`,
+      npmMcpPackage: "@openzeppelin/contracts-mcp",
+    },
+    {
+      name: "Confidential Contracts",
+      icon: ConfidentialIcon,
+      description:
+        "Generate Confidential secure smart contracts based on OpenZeppelin templates",
+      url: `${BASE_URL}contracts/confidential/mcp`,
       npmMcpPackage: "@openzeppelin/contracts-mcp",
     },
     {

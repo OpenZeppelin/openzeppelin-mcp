@@ -14,6 +14,7 @@ The following MCP servers are provided:
 
 - Solidity Contracts
 - Cairo Contracts
+- Confidential Contracts
 - Stellar Contracts
 - Stylus Contracts
 - OpenZeppelin Uniswap Hooks
