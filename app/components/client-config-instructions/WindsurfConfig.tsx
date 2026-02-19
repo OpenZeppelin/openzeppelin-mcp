@@ -1,3 +1,5 @@
+import { CopyButton } from "@/components/CopyButton";
+
 export function WindsurfConfig({ name, url, currentTheme }) {
   const config = {
     filename: "~/.codeium/windsurf/mcp_config.json",
@@ -22,8 +24,10 @@ export function WindsurfConfig({ name, url, currentTheme }) {
             Go to <strong>MCP Servers</strong>
           </li>
           <li>
-            Click <strong>Manage MCP servers</strong> {">"}{" "}
-            <strong>View raw config</strong>
+            Click <strong>Open MCP Marketplace</strong>
+          </li>
+          <li>
+            Click the Settings icon
           </li>
           <li>
             Add the MCP to your <code>mcpServers</code> config
@@ -38,6 +42,7 @@ export function WindsurfConfig({ name, url, currentTheme }) {
             <span></span>
           </div>
           <div className="code-filename">{config.filename}</div>
+          <CopyButton text={config.code} />
         </div>
         <pre className="code-content">
           <code>{config.code}</code>

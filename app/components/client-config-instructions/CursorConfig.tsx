@@ -1,3 +1,5 @@
+import { CopyButton } from "@/components/CopyButton";
+
 function AddToCursorButton({ size = 32, name, url, currentTheme = "light" }) {
   const configJson = {
     type: "streamable-http",
@@ -7,9 +9,7 @@ function AddToCursorButton({ size = 32, name, url, currentTheme = "light" }) {
   const encodedConfig = btoa(JSON.stringify(configJson));
   return (
     <a
-      href={`https://cursor.com/install-mcp?name=${name}&config=${encodedConfig}`}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={`cursor://anysphere.cursor-deeplink/mcp/install?name=${name}&config=${encodedConfig}`}
     >
       <img
         src={`https://cursor.com/deeplink/mcp-install-${
@@ -52,7 +52,7 @@ export function CursorConfig({ name, url, currentTheme }) {
             <strong>Cmd + Shift + J</strong> to open Cursor settings
           </li>
           <li>
-            Select <strong>Tools & Integrations</strong>
+            Select <strong>Tools & MCP</strong>
           </li>
           <li>
             Click <strong>New MCP Server</strong>
@@ -70,6 +70,7 @@ export function CursorConfig({ name, url, currentTheme }) {
             <span></span>
           </div>
           <div className="code-filename">{config.filename}</div>
+          <CopyButton text={config.code} />
         </div>
         <pre className="code-content">
           <code>{config.code}</code>
