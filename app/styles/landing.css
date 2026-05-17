@@ -235,6 +235,29 @@ body {
   transition: color 0.3s ease;
 }
 
+.copy-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.2s ease, background 0.2s ease;
+  line-height: 1;
+}
+
+.copy-button:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.copy-button.copied {
+  color: var(--dot-green);
+}
+
 .code-content {
   padding: 20px;
   margin: 0;

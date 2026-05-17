@@ -1,3 +1,5 @@
+import { CopyButton } from "@/components/CopyButton";
+
 export function GeminiCliConfig({ name, url, currentTheme }) {
   const config = {
     filename: "~/.gemini/settings.json",
@@ -35,6 +37,7 @@ export function GeminiCliConfig({ name, url, currentTheme }) {
             <span></span>
           </div>
           <div className="code-filename">{config.filename}</div>
+          <CopyButton text={config.code} />
         </div>
         <pre className="code-content">
           <code>{config.code}</code>

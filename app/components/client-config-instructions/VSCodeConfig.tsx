@@ -1,3 +1,5 @@
+import { CopyButton } from "@/components/CopyButton";
+
 function AddToVSCode({ size = 32, name, url }) {
   const jsonConfig = {
     name: name,
@@ -80,6 +82,7 @@ export function VSCodeConfig({ name, url }) {
             <span></span>
           </div>
           <div className="code-filename">{config.filename}</div>
+          <CopyButton text={config.code} />
         </div>
         <pre className="code-content">
           <code>{config.code}</code>

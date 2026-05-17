@@ -8,6 +8,7 @@ import {
   GitHubIcon,
   SolidityIcon,
   CairoIcon,
+  ConfidentialIcon,
   StellarIcon,
   StylusIcon,
   UniswapHooksIcon,
@@ -121,6 +122,14 @@ export default function HomePage() {
       npmMcpPackage: "@openzeppelin/contracts-mcp",
     },
     {
+      name: "Confidential Contracts",
+      icon: ConfidentialIcon,
+      description:
+        "Generate Confidential secure smart contracts based on OpenZeppelin templates",
+      url: `${BASE_URL}contracts/confidential/mcp`,
+      npmMcpPackage: "@openzeppelin/contracts-mcp",
+    },
+    {
       name: "Stellar Contracts",
       icon: StellarIcon,
       description:
@@ -205,7 +214,7 @@ export default function HomePage() {
       />
       <footer className="page-footer">
         <p>
-          &copy; OpenZeppelin 2017-2025 |{" "}
+          &copy; OpenZeppelin 2017-2026 |{" "}
           <a
             href="https://www.openzeppelin.com/privacy"
             target="_blank"
