@@ -11,8 +11,9 @@ import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
 
 const STELLAR_TOOLS_NAMES = [
   "stellar-fungible",
-  "stellar-non-fungible",
+  "stellar-governor",
   "stellar-stablecoin",
+  "stellar-non-fungible"
 ];
 
 const STELLAR_ENDPOINT = "http://localhost:3000/contracts/stellar/mcp";
