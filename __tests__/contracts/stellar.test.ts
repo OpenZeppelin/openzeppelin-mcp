@@ -13,6 +13,8 @@ const STELLAR_TOOLS_NAMES = [
   "stellar-fungible",
   "stellar-non-fungible",
   "stellar-stablecoin",
+  "stellar-governor",
+  "stellar-vault"
 ];
 
 const STELLAR_ENDPOINT = "http://localhost:3000/contracts/stellar/mcp";
