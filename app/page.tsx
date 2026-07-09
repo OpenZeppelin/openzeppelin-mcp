@@ -12,6 +12,7 @@ import {
   StellarIcon,
   StylusIcon,
   UniswapHooksIcon,
+  SuiIcon,
 } from "@/components/icons";
 import { ConfigModal } from "@/components/ConfigModal";
 
@@ -151,6 +152,14 @@ export default function HomePage() {
       description:
         "Generate Uniswap Hooks secure smart contracts based on OpenZeppelin templates",
       url: `${BASE_URL}contracts/uniswap-hooks/mcp`,
+      npmMcpPackage: "@openzeppelin/contracts-mcp",
+    },
+    {
+      name: "Sui Contracts",
+      icon: SuiIcon,
+      description:
+        "Compose Sui Move smart contracts based on OpenZeppelin's audited primitives",
+      url: `${BASE_URL}contracts/sui/mcp`,
       npmMcpPackage: "@openzeppelin/contracts-mcp",
     },
   ];
