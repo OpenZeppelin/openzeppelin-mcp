@@ -10,12 +10,7 @@ import { getTitleText } from "@/contracts/prompts";
 import { SUI_INSTRUCTIONS } from "@/lib/sui/register";
 import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
 
-const SUI_TOOLS_NAMES = [
-  "sui-list-recipes",
-  "sui-get-recipe",
-  "sui-scaffold-package",
-  "sui-get-dependencies",
-];
+const SUI_TOOLS_NAMES = ["sui-list-recipes", "sui-get-recipe", "sui-get-package"];
 
 const SUI_ENDPOINT = "http://localhost:3000/contracts/sui/mcp";
 
