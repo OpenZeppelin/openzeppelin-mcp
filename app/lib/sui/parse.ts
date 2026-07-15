@@ -20,11 +20,13 @@ export function parseModule(source: string): string | null {
 }
 
 /**
- * Extract `title` (first doc-comment line) and `summary` (the lead paragraph
- * after it) from a module's `///` doc-comment. The disclaimer and any later
- * sections are excluded — summary stops at the first blank line or `#` heading.
+ * Extract the `summary` — the lead paragraph of a module's `///` doc-comment —
+ * as one coherent string. Reads the first `///` block and joins its first
+ * paragraph, stopping at the first blank line or `#` heading (so the disclaimer
+ * and later sections are excluded). Whole-sentence-safe: it never cuts at a line
+ * wrap, so wrapped first sentences stay intact.
  */
-export function parseDocComment(source: string): { title: string; summary: string } {
+export function parseSummary(source: string): string {
   const lines = source.split("\n");
   const doc: string[] = [];
   for (const line of lines) {
@@ -35,16 +37,13 @@ export function parseDocComment(source: string): { title: string; summary: strin
       break; // doc-comment block ended (reached `module`, attribute, or code)
     }
   }
-  const title = (doc[0] ?? "").trim();
-  const summary: string[] = [];
-  let i = 1;
-  while (i < doc.length && doc[i].trim() === "") i++;
-  for (; i < doc.length; i++) {
-    const t = doc[i].trim();
-    if (t === "" || t.startsWith("#")) break;
-    summary.push(t);
+  const para: string[] = [];
+  for (const d of doc) {
+    const t = d.trim();
+    if (t === "" || t.startsWith("#")) break; // end of the lead paragraph
+    para.push(t);
   }
-  return { title, summary: summary.join(" ") };
+  return para.join(" ");
 }
 
 /** All distinct `use openzeppelin_x::mod` targets in a file, in source order. */
@@ -149,9 +148,9 @@ export function buildIndex(
   exampleFiles: SourceFile[],
   packageInputs: Array<{ path: string; moveToml: string; readme: string | null }>,
   catalogReadmes: Record<string, string>,
-  opts: { ref: string; generatedFrom: string; repoGitUrl: string; gitRev: string }
+  opts: { generatedFrom: string; repoGitUrl: string; gitRev: string }
 ): SuiIndex {
-  const { ref, generatedFrom, repoGitUrl, gitRev } = opts;
+  const { generatedFrom, repoGitUrl, gitRev } = opts;
 
   // Per-scenario-dir module index: sibling `use`s resolve within the same dir.
   const modulesByDir = new Map<string, Map<string, SourceFile>>();
@@ -189,12 +188,9 @@ export function buildIndex(
     const files: RecipeFile[] = [...bundled.values()]
       .sort((a, b) => a.path.localeCompare(b.path))
       .map((bf) => ({ path: bf.path, module: parseModule(bf.source)!, source: bf.source }));
-    const { title, summary } = parseDocComment(f.source);
-
     recipes.push({
       id: recipeIdFromPath(f.path),
-      title,
-      summary,
+      summary: parseSummary(f.source),
       kind: externals.size > 0 ? "recipe" : "support",
       packages: [...externals].sort(),
       files,
@@ -223,12 +219,11 @@ export function buildIndex(
       namespace,
       path: pkg.path,
       installLine: readmeLine ?? synthesizeGitDep(namespace, pkg.path, repoGitUrl, gitRev),
-      installMechanism: mvrPublished ? "mvr" : "git",
       mvrPublished,
       slug: mvrPublished ? parseSlug(readmeLine) : null,
       docsUrl: docsByPath.get(pkg.path) ?? null,
     };
   }
 
-  return { ref, generatedFrom, packages, recipes };
+  return { generatedFrom, packages, recipes };
 }

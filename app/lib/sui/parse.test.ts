@@ -1,6 +1,6 @@
 import {
   parseModule,
-  parseDocComment,
+  parseSummary,
   parseOzUses,
   recipeIdFromPath,
   parseInstallLine,
@@ -25,33 +25,35 @@ describe("parseModule", () => {
   });
 });
 
-describe("parseDocComment", () => {
-  const source = [
-    "/// A per-user faucet that composes two limiters.",
-    "///",
-    "/// The shared Faucet carries one global fixed-window limiter that throttles",
-    "/// every claimer collectively.",
-    "///",
-    "/// # Disclaimer",
-    "///",
-    "/// This module is an unaudited example.",
-    "module openzeppelin_utils::faucet;",
-  ].join("\n");
-
-  it("uses the first doc line as the title", () => {
-    expect(parseDocComment(source).title).toBe("A per-user faucet that composes two limiters.");
+describe("parseSummary", () => {
+  it("joins the lead paragraph, excluding the disclaimer", () => {
+    const source = [
+      "/// A per-user faucet that composes two limiters.",
+      "///",
+      "/// A later paragraph that is not the summary.",
+      "///",
+      "/// # Disclaimer",
+      "///",
+      "/// This module is an unaudited example.",
+      "module openzeppelin_utils::faucet;",
+    ].join("\n");
+    expect(parseSummary(source)).toBe("A per-user faucet that composes two limiters.");
   });
-  it("uses the lead paragraph as the summary, excluding the disclaimer", () => {
-    const { summary } = parseDocComment(source);
-    expect(summary).toBe(
-      "The shared Faucet carries one global fixed-window limiter that throttles every claimer collectively."
+  it("keeps a first sentence that wraps across lines intact (no mid-sentence cut)", () => {
+    const source = [
+      "/// A backloaded (quadratic) vesting curve for `vesting_wallet` - a worked example of",
+      "/// a custom schedule that ships only the curve logic.",
+      "///",
+      "/// More detail below.",
+      "module openzeppelin_finance::example_vesting_quadratic;",
+    ].join("\n");
+    expect(parseSummary(source)).toBe(
+      "A backloaded (quadratic) vesting curve for `vesting_wallet` - a worked example of a custom schedule that ships only the curve logic."
     );
-    expect(summary).not.toContain("Disclaimer");
-    expect(summary).not.toContain("unaudited");
   });
-  it("stops the summary at the first markdown heading", () => {
-    const s = "/// Title line.\n///\n/// # Heading immediately\n/// body\nmodule openzeppelin_access::x;";
-    expect(parseDocComment(s).summary).toBe("");
+  it("returns empty when the doc-comment opens with a heading", () => {
+    const s = "/// # Heading immediately\n/// body\nmodule openzeppelin_access::x;";
+    expect(parseSummary(s)).toBe("");
   });
 });
 
@@ -113,7 +115,7 @@ describe("parseInstallLine / parseSlug", () => {
     expect(parseSlug(null)).toBeNull();
   });
   it("extracts a git dependency line verbatim, not just r.mvr", () => {
-    const line = 'openzeppelin_foo = { git = "https://x.git", subdir = "contracts/foo", rev = "v1.5.0" }';
+    const line = 'openzeppelin_foo = { git = "https://x.git", subdir = "contracts/foo", rev = "v1.4.0" }';
     expect(parseInstallLine(`## Install\n\`\`\`toml\n${line}\n\`\`\``, "openzeppelin_foo")).toBe(line);
   });
   it("only matches inside the ## Install section", () => {
@@ -179,8 +181,8 @@ describe("buildIndex", () => {
       moveToml: '[package]\nname = "openzeppelin_allowance"',
       readme: "# Allowance\n\nSome docs, but no install block.",
     },
-    // timelock is a discovered package but is NOT in the catalog table below
-    { path: "contracts/timelock", moveToml: '[package]\nname = "openzeppelin_timelock"', readme: null },
+    // a discovered package that is NOT in the catalog table below
+    { path: "contracts/widget", moveToml: '[package]\nname = "openzeppelin_widget"', readme: null },
   ];
   const catalogReadmes = {
     "contracts/README.md":
@@ -190,10 +192,9 @@ describe("buildIndex", () => {
   };
 
   const index = buildIndex([faucet, rareCoin], packages, catalogReadmes, {
-    ref: "main",
-    generatedFrom: "repo@sha",
+    generatedFrom: "repo@main",
     repoGitUrl: "https://github.com/OpenZeppelin/contracts-sui.git",
-    gitRev: "v1.5.0",
+    gitRev: "v1.4.0",
   });
 
   it("classifies a file using an external primitive as a recipe", () => {
@@ -224,7 +225,6 @@ describe("buildIndex", () => {
       namespace: "openzeppelin_utils",
       path: "contracts/utils",
       installLine: 'openzeppelin_utils = { r.mvr = "@openzeppelin-move/utils" }',
-      installMechanism: "mvr",
       mvrPublished: true,
       slug: "utils",
       docsUrl: "https://d",
@@ -235,20 +235,18 @@ describe("buildIndex", () => {
       namespace: "openzeppelin_allowance",
       path: "contracts/allowance",
       installLine:
-        'openzeppelin_allowance = { git = "https://github.com/OpenZeppelin/contracts-sui.git", subdir = "contracts/allowance", rev = "v1.5.0" }',
-      installMechanism: "git",
+        'openzeppelin_allowance = { git = "https://github.com/OpenZeppelin/contracts-sui.git", subdir = "contracts/allowance", rev = "v1.4.0" }',
       mvrPublished: false,
       slug: null,
       docsUrl: "https://a",
     });
   });
   it("registers a discovered package even when it is absent from the catalog table", () => {
-    expect(index.packages["openzeppelin_timelock"]).toEqual({
-      namespace: "openzeppelin_timelock",
-      path: "contracts/timelock",
+    expect(index.packages["openzeppelin_widget"]).toEqual({
+      namespace: "openzeppelin_widget",
+      path: "contracts/widget",
       installLine:
-        'openzeppelin_timelock = { git = "https://github.com/OpenZeppelin/contracts-sui.git", subdir = "contracts/timelock", rev = "v1.5.0" }',
-      installMechanism: "git",
+        'openzeppelin_widget = { git = "https://github.com/OpenZeppelin/contracts-sui.git", subdir = "contracts/widget", rev = "v1.4.0" }',
       mvrPublished: false,
       slug: null,
       docsUrl: null,

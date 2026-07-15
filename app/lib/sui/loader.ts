@@ -26,12 +26,18 @@ const CONTENT_REF = process.env.SUI_CONTRACTS_REF || "main";
 const FALLBACK_RELEASE = "v1.4.0";
 const TARBALL = `https://codeload.github.com/OpenZeppelin/contracts-sui/tar.gz/${CONTENT_REF}`;
 const RELEASES_API = "https://api.github.com/repos/OpenZeppelin/contracts-sui/releases/latest";
+// GitHub rejects/throttles requests without a User-Agent; send one on every call.
+const USER_AGENT = "openzeppelin-mcp";
 
 /** Tag of the latest GitHub release — the install pin for git dependencies. */
 async function latestReleaseTag(): Promise<string | null> {
   try {
     const res = await fetch(RELEASES_API, {
-      headers: { Accept: "application/vnd.github+json" },
+      headers: {
+        Accept: "application/vnd.github+json",
+        "User-Agent": USER_AGENT,
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
       signal: AbortSignal.timeout(20_000),
     });
     if (!res.ok) return null;
@@ -77,7 +83,7 @@ async function build(): Promise<SuiIndex> {
   // explicit SUI_INSTALL_REF), falling back to a pinned release tag — never a
   // moving branch — when the release lookup is unavailable.
   const [res, releaseTag] = await Promise.all([
-    fetch(TARBALL, { signal: AbortSignal.timeout(20_000) }),
+    fetch(TARBALL, { headers: { "User-Agent": USER_AGENT }, signal: AbortSignal.timeout(20_000) }),
     process.env.SUI_INSTALL_REF ? Promise.resolve(process.env.SUI_INSTALL_REF) : latestReleaseTag(),
   ]);
   if (!res.ok) throw new Error(`Failed to fetch ${TARBALL}: ${res.status} ${res.statusText}`);
@@ -113,7 +119,6 @@ async function build(): Promise<SuiIndex> {
   }
 
   return buildIndex(exampleFiles, packages, catalogReadmes, {
-    ref: CONTENT_REF,
     generatedFrom: `${REPO}@${CONTENT_REF}`,
     repoGitUrl: `${REPO}.git`,
     gitRev,

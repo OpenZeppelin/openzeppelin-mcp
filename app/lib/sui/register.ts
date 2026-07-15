@@ -11,7 +11,7 @@ import type { PackageInfo, SuiIndex } from "./index.types";
  * turning recipes into a buildable project (Move.toml wiring, re-homing example
  * modules, dependency-version reconciliation, scaffolding) is the job of the
  * OpenZeppelin Sui skills, which the server points callers to. All data is
- * served from the generated, pinned index.
+ * loaded at runtime from contracts-sui (see `loader.ts`) and cached.
  *
  * Tools are registered on the low-level server with plain JSON-Schema inputs and
  * hand-read arguments — no schema-library dependency.
@@ -69,7 +69,7 @@ const TOOLS = [
   {
     name: "sui-list-recipes",
     description:
-      "Discovery entry point. Lists available composition recipes (id, title, summary, " +
+      "Discovery entry point. Lists available composition recipes (id, summary, " +
       "packages used, and whether all its packages are published on the Move Registry) " +
       "without file bodies. Optional " +
       "`package` filters to one package (namespace, MVR slug, or short name). Pick a recipe " +
@@ -123,12 +123,17 @@ const TOOLS = [
 
 function listRecipes(index: SuiIndex, args: { package?: string }): ToolResult {
   const pkg = args.package;
+  // An unknown filter errors (like sui-get-package); an empty result is then
+  // only ever a valid package that happens to have no recipes.
+  if (pkg && !resolvePackage(index, pkg)) {
+    const known = Object.keys(index.packages).join(", ");
+    return text(`Unknown package: ${pkg}\nKnown packages: ${known}`, true);
+  }
   const recipes = index.recipes
     .filter((r) => r.kind === "recipe")
     .filter((r) => !pkg || r.packages.some((ns) => matchesPackage(index, ns, pkg)))
     .map((r) => ({
       id: r.id,
-      title: r.title,
       summary: r.summary,
       packages: r.packages,
       mvrPublished: r.packages.every((ns) => index.packages[ns]?.mvrPublished),
@@ -153,13 +158,11 @@ function getRecipe(index: SuiIndex, args: { id?: string }): ToolResult {
     .map((p) => ({
       namespace: p.namespace,
       installLine: p.installLine,
-      installMechanism: p.installMechanism,
       mvrPublished: p.mvrPublished,
       docs: p.docsUrl,
     }));
   return json({
     id: r.id,
-    title: r.title,
     summary: r.summary,
     packages,
     files: r.files.map((f) => ({ path: f.path, module: f.module, source: f.source })),
@@ -179,7 +182,6 @@ function getPackage(index: SuiIndex, args: { package?: string }): ToolResult {
     namespace: p.namespace,
     slug: p.slug,
     installLine: p.installLine,
-    installMechanism: p.installMechanism,
     mvrPublished: p.mvrPublished,
     links: { docs: p.docsUrl, audits, source: sourceUrl(p.path) },
     note:
