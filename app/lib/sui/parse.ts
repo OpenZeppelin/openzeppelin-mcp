@@ -13,9 +13,10 @@ function dirname(path: string): string {
   return i < 0 ? "." : path.slice(0, i);
 }
 
-/** Extract the `openzeppelin_x::mod` module a file declares, or null. */
+/** Extract the `openzeppelin_x::mod` module a file declares, or null. Accepts
+ *  both the Move 2024 label form (`module a::b;`) and the block form (`module a::b {`). */
 export function parseModule(source: string): string | null {
-  const m = source.match(/^\s*module\s+(openzeppelin_[a-z0-9_]+::[a-z0-9_]+)\s*;/m);
+  const m = source.match(/^\s*module\s+(openzeppelin_[a-z0-9_]+::[a-z0-9_]+)\s*[;{]/m);
   return m ? m[1] : null;
 }
 
@@ -82,7 +83,7 @@ export function recipeIdFromPath(path: string): string {
  * when there is no `## Install` section or no matching line. We never synthesize.
  */
 export function parseInstallLine(readme: string, namespace: string): string | null {
-  const after = readme.split(/##\s+Install/i)[1];
+  const after = readme.split(/##\s+Install\b/i)[1];
   if (after === undefined) return null;
   const section = after.split(/\n##\s/)[0];
   // Namespaces are always `openzeppelin_*` (no regex metacharacters).
@@ -171,8 +172,8 @@ export function buildIndex(
     const bundled = new Map<string, SourceFile>();
     const externals = new Set<string>();
     const queue: SourceFile[] = [f];
-    while (queue.length > 0) {
-      const cur = queue.shift()!;
+    for (let qi = 0; qi < queue.length; qi++) {
+      const cur = queue[qi];
       if (bundled.has(cur.path)) continue;
       bundled.set(cur.path, cur);
       for (const u of parseOzUses(cur.source)) {
