@@ -53,6 +53,15 @@ function resolvePackage(index: SuiIndex, filter: string): PackageInfo | undefine
   return ns ? index.packages[ns] : undefined;
 }
 
+/** Message for an unknown-package error: the namespaces, sorted (a short name or MVR slug is also accepted). */
+function unknownPackage(index: SuiIndex, filter: string | undefined): ToolResult {
+  const namespaces = Object.keys(index.packages).sort().join(", ");
+  return text(
+    `Unknown package: ${filter}\nKnown packages (namespace — a short name or MVR slug is also accepted): ${namespaces}`,
+    true
+  );
+}
+
 type ToolResult = { content: Array<{ type: "text"; text: string }>; isError?: boolean };
 
 function text(value: string, isError = false): ToolResult {
@@ -125,10 +134,7 @@ function listRecipes(index: SuiIndex, args: { package?: string }): ToolResult {
   const pkg = args.package;
   // An unknown filter errors (like sui-get-package); an empty result is then
   // only ever a valid package that happens to have no recipes.
-  if (pkg && !resolvePackage(index, pkg)) {
-    const known = Object.keys(index.packages).join(", ");
-    return text(`Unknown package: ${pkg}\nKnown packages: ${known}`, true);
-  }
+  if (pkg && !resolvePackage(index, pkg)) return unknownPackage(index, pkg);
   const recipes = index.recipes
     .filter((r) => r.kind === "recipe")
     .filter((r) => !pkg || r.packages.some((ns) => matchesPackage(index, ns, pkg)))
@@ -173,10 +179,7 @@ function getRecipe(index: SuiIndex, args: { id?: string }): ToolResult {
 
 function getPackage(index: SuiIndex, args: { package?: string }): ToolResult {
   const p = args.package ? resolvePackage(index, args.package) : undefined;
-  if (!p) {
-    const known = Object.keys(index.packages).join(", ");
-    return text(`Unknown package: ${args.package}\nKnown packages: ${known}`, true);
-  }
+  if (!p) return unknownPackage(index, args.package);
   const { audits, sourceUrl } = links(index);
   return json({
     namespace: p.namespace,
