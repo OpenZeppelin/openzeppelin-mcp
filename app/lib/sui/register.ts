@@ -94,7 +94,7 @@ const TOOLS = [
     description:
       "Returns a full recipe by `id`: the scenario file plus any local support files, " +
       "verbatim, with the packages it uses (and how each is installed), links (docs / audits " +
-      "/ source), and assembly notes. Data only — scaffolding the project and integrating the " +
+      "/ source URLs), and assembly notes. Data only — scaffolding the project and integrating the " +
       "code is the `setup-sui-contracts` / `develop-secure-contracts` skills' job.",
     inputSchema: {
       type: "object",
@@ -107,7 +107,7 @@ const TOOLS = [
   {
     name: "sui-get-package",
     description:
-      "Returns metadata for one OZ package (namespace, MVR slug, docs, audits, source) and " +
+      "Returns metadata for one OZ package (namespace, MVR slug, docs, audits, source URL) and " +
       "the dependency line from its README — `r.mvr` when it is published on the Move Registry, " +
       "or a git dependency when it is not. Data only: reconciling versions and writing " +
       "the final Move.toml is the `setup-sui-contracts` skill's job.",
@@ -176,7 +176,7 @@ function getRecipe(index: SuiIndex, args: { id?: string }): ToolResult {
     summary: r.summary,
     packages,
     files: r.files.map((f) => ({ path: f.path, module: f.module, source: f.source })),
-    links: { audits, source: r.files.map((f) => sourceUrl(f.path)) },
+    links: { audits, sourceUrls: r.files.map((f) => sourceUrl(f.path)) },
     assemblyNote: ASSEMBLY_NOTE,
   });
 }
@@ -193,7 +193,7 @@ function getPackage(index: SuiIndex, args: { package?: string }): ToolResult {
     slug: p.slug,
     installLine: p.installLine,
     mvrPublished: p.mvrPublished,
-    links: { docs: p.docsUrl, audits, source: sourceUrl(p.path) },
+    links: { docs: p.docsUrl, audits, sourceUrl: sourceUrl(p.path) },
     note:
       "Install line taken verbatim from the package README. Wiring it into a buildable " +
       "Move.toml is the `setup-sui-contracts` skill's job.",
