@@ -154,7 +154,8 @@ function listRecipes(index: SuiIndex, args: { package?: string }): ToolResult {
 
 function getRecipe(index: SuiIndex, args: { id?: string }): ToolResult {
   if (!args.id) return text("Missing required argument: id. Call sui-list-recipes to see valid recipe ids.", true);
-  const r = index.recipes.find((x) => x.id === args.id);
+  // recipe-kind only; support files ship bundled in a recipe's `files[]`.
+  const r = index.recipes.find((x) => x.id === args.id && x.kind === "recipe");
   if (!r) {
     const ids = index.recipes.filter((x) => x.kind === "recipe").map((x) => x.id);
     return text(`Unknown recipe id: ${args.id}\nValid ids:\n${ids.join("\n")}`, true);
