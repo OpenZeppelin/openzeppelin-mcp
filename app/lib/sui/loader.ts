@@ -1,20 +1,13 @@
 /**
- * Runtime loader for the Sui recipe index. Instead of committing a generated
- * snapshot, the server derives the index on demand from `contracts-sui` itself
- * (the single source of truth) and caches it in-process. One tarball fetch, no
- * cron, no drift-check, no committed copy. Node runtime only (fetch + zlib).
+ * Runtime loader for the Sui recipe index: derives it on demand from
+ * `contracts-sui` (the source of truth) and caches in-process — one tarball
+ * fetch, no committed snapshot, no cron. Node runtime only (fetch + zlib).
  *
- * Content is pinned to a committed contracts-sui release tag, used both for the
- * tarball we parse and for the `rev` of the git dependencies we synthesize. A
- * pinned tag, rather than `main`, means:
- *  - reviewed: the server only serves released code, and bumping it is a
- *    committed, reviewable diff (like every other server's data bump here);
- *  - consistent: examples and the `rev` that installs them come from one ref,
- *    so a recipe can never reference an API its pinned dependency lacks;
- *  - reproducible: the process-lifetime cache is exact, since tag tarballs are
- *    immutable — `generatedFrom` names the precise content every replica serves.
- * Bump `SUI_CONTENT_REF` on each contracts-sui release. `SUI_CONTRACTS_REF`
- * overrides it for local testing against a branch or a newer tag.
+ * Content is pinned to a committed release tag, used for both the parsed
+ * tarball and the synthesized git-dep `rev`s. A pinned tag (not `main`) serves
+ * only released code, keeps examples consistent with the rev that installs
+ * them, and makes the cache reproducible. Bump `SUI_CONTENT_REF` per release;
+ * `SUI_CONTRACTS_REF` overrides it for local testing.
  */
 
 import { gunzipSync } from "node:zlib";
@@ -31,10 +24,11 @@ const TARBALL = `https://codeload.github.com/OpenZeppelin/contracts-sui/tar.gz/$
 const USER_AGENT = "openzeppelin-mcp";
 
 /**
- * Minimal ustar reader: file contents keyed by repo-relative path (top-level
- * `contracts-sui-<ref>/` stripped). contracts-sui's tarball uses plain ustar
- * with short paths, so `prefix + name` is all that's needed — no GNU/pax long
- * names. Non-file entries (dirs, the pax global header) fall through untouched.
+ * Reads a (gzip-decompressed) tar buffer into a map of repo-relative path to
+ * file contents. GitHub tarballs wrap everything in a top-level
+ * `contracts-sui-<ref>/` folder, which we strip. They use plain ustar with
+ * short paths, so the header's `prefix` + `name` fields are enough (no GNU/pax
+ * long-name handling); only regular files are kept, directories are skipped.
  */
 export function untar(buf: Buffer): Map<string, string> {
   const files = new Map<string, string>();

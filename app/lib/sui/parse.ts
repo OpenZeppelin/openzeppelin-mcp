@@ -21,11 +21,9 @@ export function parseModule(source: string): string | null {
 }
 
 /**
- * Extract the `summary` — the lead paragraph of a module's `///` doc-comment —
- * as one coherent string. Reads the first `///` block and joins its first
- * paragraph, stopping at the first blank line or `#` heading (so the disclaimer
- * and later sections are excluded). Whole-sentence-safe: it never cuts at a line
- * wrap, so wrapped first sentences stay intact.
+ * The `summary`: the lead paragraph of a module's `///` doc-comment, joined
+ * into one string. Stops at the first blank line or `#` heading (excludes the
+ * disclaimer and later sections); never cuts mid-sentence at a line wrap.
  */
 export function parseSummary(source: string): string {
   const lines = source.split("\n");
@@ -65,9 +63,8 @@ export function parseOzUses(source: string): Array<{ namespace: string; module: 
 
 /**
  * Recipe id: `<package>/<path under examples/>` without extension, where
- * `<package>` is the directory that holds `examples/`. Works for any layout —
- * `contracts/utils/examples/rate_limiter/faucet.move` -> `utils/rate_limiter/faucet`,
- * `collections/examples/deque/ring.move` -> `collections/deque/ring`.
+ * `<package>` is the dir holding `examples/`. E.g.
+ * `contracts/utils/examples/rate_limiter/faucet.move` -> `utils/rate_limiter/faucet`.
  */
 export function recipeIdFromPath(path: string): string {
   const norm = path.replace(/\\/g, "/").replace(/\.move$/, "");
@@ -206,11 +203,12 @@ export function buildIndex(
     for (const row of parseCatalog(content, baseDir)) docsByPath.set(row.path, row.docsUrl);
   }
 
-  // Package registry: every discovered package (a dir with a Move.toml) is
-  // included, whether or not it appears in a catalog. Namespace comes from the
-  // Move.toml. The install line is taken verbatim from the README when it has
-  // one (an `r.mvr` line ⇒ `mvrPublished`, or a git line as-is); only when the
-  // README has no install line do we synthesize a git dep pinned to `gitRev`.
+  // Package registry: every discovered package (a directory with a Move.toml)
+  // is included, whether or not it appears in a catalog. The namespace comes
+  // from the Move.toml. The install line is taken verbatim from the README when
+  // it has one: an `r.mvr` line means the package is on the Move Registry, and a
+  // git line is kept as-is. Only when the README has no install line at all do
+  // we synthesize a git dependency pinned to `gitRev`.
   const packages: Record<string, PackageInfo> = {};
   for (const pkg of [...packageInputs].sort((a, b) => a.path.localeCompare(b.path))) {
     const namespace = parsePackageName(pkg.moveToml);

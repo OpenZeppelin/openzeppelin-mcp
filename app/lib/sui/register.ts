@@ -4,17 +4,12 @@ import { loadSuiIndex } from "./loader";
 import type { PackageInfo, SuiIndex } from "./index.types";
 
 /**
- * The Sui server is a thin, deterministic **data layer** over the
- * `contracts-sui` `examples/` and package metadata. It returns composition
- * recipes built on OpenZeppelin's audited Sui Move primitives and the metadata
- * for depending on those primitives. It is not the Wizard and does no assembly:
- * turning recipes into a buildable project (Move.toml wiring, re-homing example
- * modules, dependency-version reconciliation, scaffolding) is the job of the
- * OpenZeppelin Sui skills, which the server points callers to. All data is
- * loaded at runtime from contracts-sui (see `loader.ts`) and cached.
- *
- * Tools are registered on the low-level server with plain JSON-Schema inputs and
- * hand-read arguments — no schema-library dependency.
+ * The Sui server: a thin, deterministic data layer over `contracts-sui`'s
+ * `examples/` + package metadata. It returns composition recipes and how to
+ * depend on the primitives; it does no assembly (Move.toml wiring, re-homing,
+ * scaffolding) — that is the OpenZeppelin Sui skills' job. Data is loaded at
+ * runtime (see `loader.ts`) and cached. Tools use the low-level server with
+ * plain JSON-Schema inputs and hand-read args — no schema-library dependency.
  */
 
 // Assembly is out of scope for this server — it is the skills' job.
@@ -154,7 +149,9 @@ function listRecipes(index: SuiIndex, args: { package?: string }): ToolResult {
 
 function getRecipe(index: SuiIndex, args: { id?: string }): ToolResult {
   if (!args.id) return text("Missing required argument: id. Call sui-list-recipes to see valid recipe ids.", true);
-  // recipe-kind only; support files ship bundled in a recipe's `files[]`.
+  // Only recipe-kind ids resolve here — the same set `sui-list-recipes` shows.
+  // A support file is never fetched on its own; it is bundled into the `files[]`
+  // of the recipe that uses it.
   const r = index.recipes.find((x) => x.id === args.id && x.kind === "recipe");
   if (!r) {
     const ids = index.recipes.filter((x) => x.kind === "recipe").map((x) => x.id);
