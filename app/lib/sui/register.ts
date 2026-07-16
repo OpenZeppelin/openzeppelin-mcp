@@ -104,7 +104,7 @@ const TOOLS = [
     inputSchema: {
       type: "object",
       properties: {
-        id: { type: "string", description: "Recipe id, e.g. `access/access_control/reward_treasury`." },
+        id: { type: "string", description: "Recipe id, e.g. `utils/rate_limiter/faucet`." },
       },
       required: ["id"],
     },

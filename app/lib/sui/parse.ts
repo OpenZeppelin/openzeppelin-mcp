@@ -208,8 +208,9 @@ export function buildIndex(
 
   // Package registry: every discovered package (a dir with a Move.toml) is
   // included, whether or not it appears in a catalog. Namespace comes from the
-  // Move.toml. A package is on MVR iff its README publishes an `r.mvr` install
-  // line; otherwise it gets a git dep pinned to `gitRev`.
+  // Move.toml. The install line is taken verbatim from the README when it has
+  // one (an `r.mvr` line ⇒ `mvrPublished`, or a git line as-is); only when the
+  // README has no install line do we synthesize a git dep pinned to `gitRev`.
   const packages: Record<string, PackageInfo> = {};
   for (const pkg of [...packageInputs].sort((a, b) => a.path.localeCompare(b.path))) {
     const namespace = parsePackageName(pkg.moveToml);
