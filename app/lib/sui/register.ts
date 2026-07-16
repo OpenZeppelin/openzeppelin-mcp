@@ -20,8 +20,9 @@ import type { PackageInfo, SuiIndex } from "./index.types";
 // Assembly is out of scope for this server — it is the skills' job.
 export const ASSEMBLY_NOTE =
   "Data, not a compile-ready package: these are library-authored example modules under the " +
-  "library's own address. Use the `setup-sui-contracts` skill to build a project from them, " +
-  "and `review-sui-contracts` to review an integration.";
+  "library's own address. Use `setup-sui-contracts` to scaffold the project and " +
+  "`develop-secure-contracts` to integrate them into your code, then `review-sui-contracts` " +
+  "to review the result.";
 
 // Server `instructions`: the data tools, and the skills that assemble on top.
 export const SUI_INSTRUCTIONS =
@@ -98,8 +99,8 @@ const TOOLS = [
     description:
       "Returns a full recipe by `id`: the scenario file plus any local support files, " +
       "verbatim, with the packages it uses (and how each is installed), links (docs / audits " +
-      "/ source), and assembly notes. Data only — wiring into a buildable project is the " +
-      "`setup-sui-contracts` skill's job.",
+      "/ source), and assembly notes. Data only — scaffolding the project and integrating the " +
+      "code is the `setup-sui-contracts` / `develop-secure-contracts` skills' job.",
     inputSchema: {
       type: "object",
       properties: {
@@ -147,26 +148,31 @@ function listRecipes(index: SuiIndex, args: { package?: string }): ToolResult {
   return json({
     recipes,
     buildWith:
-      "Use `sui-get-recipe` to read one; use the `setup-sui-contracts` skill to wire it into a buildable project.",
+      "Use `sui-get-recipe` to read one; use the `setup-sui-contracts` / `develop-secure-contracts` skills to turn it into a buildable project.",
   });
 }
 
 function getRecipe(index: SuiIndex, args: { id?: string }): ToolResult {
-  const r = args.id ? index.recipes.find((x) => x.id === args.id) : undefined;
+  if (!args.id) return text("Missing required argument: id. Call sui-list-recipes to see valid recipe ids.", true);
+  const r = index.recipes.find((x) => x.id === args.id);
   if (!r) {
     const ids = index.recipes.filter((x) => x.kind === "recipe").map((x) => x.id);
     return text(`Unknown recipe id: ${args.id}\nValid ids:\n${ids.join("\n")}`, true);
   }
   const { audits, sourceUrl } = links(index);
-  const packages = r.packages
-    .map((ns) => index.packages[ns])
-    .filter((p): p is PackageInfo => Boolean(p))
-    .map((p) => ({
+  const packages = r.packages.map((ns) => {
+    const p = index.packages[ns];
+    // A recipe's external `use` should always resolve to a discovered package;
+    // if metadata is somehow absent, surface the namespace (with a null install
+    // line) rather than dropping it silently — the caller still needs the dep.
+    if (!p) return { namespace: ns, installLine: null, mvrPublished: false, docs: null };
+    return {
       namespace: p.namespace,
       installLine: p.installLine,
       mvrPublished: p.mvrPublished,
       docs: p.docsUrl,
-    }));
+    };
+  });
   return json({
     id: r.id,
     summary: r.summary,
@@ -178,7 +184,10 @@ function getRecipe(index: SuiIndex, args: { id?: string }): ToolResult {
 }
 
 function getPackage(index: SuiIndex, args: { package?: string }): ToolResult {
-  const p = args.package ? resolvePackage(index, args.package) : undefined;
+  if (!args.package) {
+    return text("Missing required argument: package. Call sui-list-recipes or sui-get-recipe to see package namespaces.", true);
+  }
+  const p = resolvePackage(index, args.package);
   if (!p) return unknownPackage(index, args.package);
   const { audits, sourceUrl } = links(index);
   return json({

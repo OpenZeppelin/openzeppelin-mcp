@@ -202,7 +202,7 @@ export function buildIndex(
   // Docs come from the catalog table (when the package is listed there), keyed by path.
   const docsByPath = new Map<string, string | null>();
   for (const [readmePath, content] of Object.entries(catalogReadmes)) {
-    const baseDir = dirname(readmePath); // "contracts" or "math"
+    const baseDir = dirname(readmePath); // a package root: "contracts", "math", or "collections"
     for (const row of parseCatalog(content, baseDir)) docsByPath.set(row.path, row.docsUrl);
   }
 
