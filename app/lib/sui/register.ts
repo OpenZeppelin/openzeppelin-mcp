@@ -1,0 +1,233 @@
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
+import { loadSuiIndex } from "./loader";
+import type { PackageInfo, SuiIndex } from "./index.types";
+
+/**
+ * The Sui server: a thin, deterministic data layer over `contracts-sui`'s
+ * `examples/` + package metadata. It returns composition recipes and how to
+ * depend on the primitives; it does no assembly (Move.toml wiring, re-homing,
+ * scaffolding) — that is the OpenZeppelin Sui skills' job. Data is loaded at
+ * runtime (see `loader.ts`) and cached. Tools use the low-level server with
+ * plain JSON-Schema inputs and hand-read args — no schema-library dependency.
+ */
+
+// Assembly is out of scope for this server — it is the skills' job.
+export const ASSEMBLY_NOTE =
+  "Data, not a compile-ready package: these are library-authored example modules under the " +
+  "library's own address. Use `setup-sui-contracts` to scaffold the project and " +
+  "`develop-secure-contracts` to integrate them into your code, then `review-sui-contracts` " +
+  "to review the result.";
+
+// Server `instructions`: the data tools, and the skills that assemble on top.
+export const SUI_INSTRUCTIONS =
+  "Data-layer MCP for OpenZeppelin's Sui Move primitives. Retrieval, not generation — you pick the recipe.\n" +
+  "Tools: `sui-list-recipes` (discover) → `sui-get-recipe` (full source + packages) / " +
+  "`sui-get-package` (how to depend + docs).\n" +
+  "Assembly (Move.toml, re-homing, scaffolding) is the OpenZeppelin Sui skills' job — prefer " +
+  "`setup-sui-contracts` / `develop-secure-contracts` / `review-sui-contracts` when available.";
+
+// === Index helpers (pure reads over the loaded index) ===
+
+/** Links derived from the index provenance (`repo@ref`): audits + per-file source URL. */
+function links(index: SuiIndex) {
+  const [base, ref] = index.generatedFrom.split("@");
+  return {
+    audits: `${base}/tree/${ref}/audits`,
+    sourceUrl: (path: string) => `${base}/blob/${ref}/${path}`,
+  };
+}
+
+/** Match a package filter against a namespace (accepts namespace, MVR slug, or short name). */
+function matchesPackage(index: SuiIndex, ns: string, filter: string): boolean {
+  const short = ns.replace(/^openzeppelin_/, "");
+  return ns === filter || short === filter || index.packages[ns]?.slug === filter;
+}
+
+function resolvePackage(index: SuiIndex, filter: string): PackageInfo | undefined {
+  const ns = Object.keys(index.packages).find((n) => matchesPackage(index, n, filter));
+  return ns ? index.packages[ns] : undefined;
+}
+
+/** Message for an unknown-package error: the namespaces, sorted (a short name or MVR slug is also accepted). */
+function unknownPackage(index: SuiIndex, filter: string | undefined): ToolResult {
+  const namespaces = Object.keys(index.packages).sort().join(", ");
+  return text(
+    `Unknown package: ${filter}\nKnown packages (namespace — a short name or MVR slug is also accepted): ${namespaces}`,
+    true
+  );
+}
+
+type ToolResult = { content: Array<{ type: "text"; text: string }>; isError?: boolean };
+
+function text(value: string, isError = false): ToolResult {
+  return { content: [{ type: "text", text: value }], isError };
+}
+
+function json(value: unknown): ToolResult {
+  return text(JSON.stringify(value, null, 2));
+}
+
+// === Tool definitions (plain JSON Schema — no schema-library dependency) ===
+
+const TOOLS = [
+  {
+    name: "sui-list-recipes",
+    description:
+      "Discovery entry point. Lists available composition recipes (id, summary, " +
+      "packages used, and whether all its packages are published on the Move Registry) " +
+      "without file bodies. Optional " +
+      "`package` filters to one package (namespace, MVR slug, or short name). Pick a recipe " +
+      "by its summary, then `sui-get-recipe`.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        package: {
+          type: "string",
+          description: "Filter to one package, e.g. `access`, `utils`, `integer-math`.",
+        },
+      },
+    },
+  },
+  {
+    name: "sui-get-recipe",
+    description:
+      "Returns a full recipe by `id`: the scenario file plus any local support files, " +
+      "verbatim, with the packages it uses (and how each is installed), links (docs / audits " +
+      "/ source URLs), and assembly notes. Data only — scaffolding the project and integrating the " +
+      "code is the `setup-sui-contracts` / `develop-secure-contracts` skills' job.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string", description: "Recipe id, e.g. `utils/rate_limiter/faucet`." },
+      },
+      required: ["id"],
+    },
+  },
+  {
+    name: "sui-get-package",
+    description:
+      "Returns metadata for one OZ package (namespace, MVR slug, docs, audits, source URL) and " +
+      "the dependency line from its README — `r.mvr` when it is published on the Move Registry, " +
+      "or a git dependency when it is not. Data only: reconciling versions and writing " +
+      "the final Move.toml is the `setup-sui-contracts` skill's job.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        package: {
+          type: "string",
+          description: "A package: namespace (`openzeppelin_utils`), MVR slug (`utils`), or short name.",
+        },
+      },
+      required: ["package"],
+    },
+  },
+];
+
+// === Tool handlers ===
+
+function listRecipes(index: SuiIndex, args: { package?: string }): ToolResult {
+  const pkg = args.package;
+  // An unknown filter errors (like sui-get-package); an empty result is then
+  // only ever a valid package that happens to have no recipes.
+  if (pkg && !resolvePackage(index, pkg)) return unknownPackage(index, pkg);
+  const recipes = index.recipes
+    .filter((r) => r.kind === "recipe")
+    .filter((r) => !pkg || r.packages.some((ns) => matchesPackage(index, ns, pkg)))
+    .map((r) => ({
+      id: r.id,
+      summary: r.summary,
+      packages: r.packages,
+      mvrPublished: r.packages.every((ns) => index.packages[ns]?.mvrPublished),
+    }));
+  return json({
+    recipes,
+    buildWith:
+      "Use `sui-get-recipe` to read one; use the `setup-sui-contracts` / `develop-secure-contracts` skills to turn it into a buildable project.",
+  });
+}
+
+function getRecipe(index: SuiIndex, args: { id?: string }): ToolResult {
+  if (!args.id) return text("Missing required argument: id. Call sui-list-recipes to see valid recipe ids.", true);
+  // Only recipe-kind ids resolve here — the same set `sui-list-recipes` shows.
+  // A support file is never fetched on its own; it is bundled into the `files[]`
+  // of the recipe that uses it.
+  const r = index.recipes.find((x) => x.id === args.id && x.kind === "recipe");
+  if (!r) {
+    const ids = index.recipes.filter((x) => x.kind === "recipe").map((x) => x.id);
+    return text(`Unknown recipe id: ${args.id}\nValid ids:\n${ids.join("\n")}`, true);
+  }
+  const { audits, sourceUrl } = links(index);
+  const packages = r.packages.map((ns) => {
+    const p = index.packages[ns];
+    // A recipe's external `use` should always resolve to a discovered package;
+    // if metadata is somehow absent, surface the namespace (with a null install
+    // line) rather than dropping it silently — the caller still needs the dep.
+    if (!p) return { namespace: ns, installLine: null, mvrPublished: false, docs: null };
+    return {
+      namespace: p.namespace,
+      installLine: p.installLine,
+      mvrPublished: p.mvrPublished,
+      docs: p.docsUrl,
+    };
+  });
+  return json({
+    id: r.id,
+    summary: r.summary,
+    packages,
+    files: r.files.map((f) => ({ path: f.path, module: f.module, source: f.source })),
+    links: { audits, sourceUrls: r.files.map((f) => sourceUrl(f.path)) },
+    assemblyNote: ASSEMBLY_NOTE,
+  });
+}
+
+function getPackage(index: SuiIndex, args: { package?: string }): ToolResult {
+  if (!args.package) {
+    return text("Missing required argument: package. Call sui-list-recipes or sui-get-recipe to see package namespaces.", true);
+  }
+  const p = resolvePackage(index, args.package);
+  if (!p) return unknownPackage(index, args.package);
+  const { audits, sourceUrl } = links(index);
+  return json({
+    namespace: p.namespace,
+    slug: p.slug,
+    installLine: p.installLine,
+    mvrPublished: p.mvrPublished,
+    links: { docs: p.docsUrl, audits, sourceUrl: sourceUrl(p.path) },
+    note:
+      "Install line taken verbatim from the package README. Wiring it into a buildable " +
+      "Move.toml is the `setup-sui-contracts` skill's job.",
+  });
+}
+
+export function registerSuiTools(server: McpServer): void {
+  const low = server.server;
+
+  low.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: TOOLS }));
+
+  low.setRequestHandler(CallToolRequestSchema, async (request) => {
+    const { name } = request.params;
+    const args = (request.params.arguments ?? {}) as Record<string, unknown>;
+
+    let index: SuiIndex;
+    try {
+      index = await loadSuiIndex();
+    } catch (err) {
+      return text(
+        `Failed to load recipe data from contracts-sui: ${err instanceof Error ? err.message : String(err)}`,
+        true
+      );
+    }
+
+    switch (name) {
+      case "sui-list-recipes":
+        return listRecipes(index, args as { package?: string });
+      case "sui-get-recipe":
+        return getRecipe(index, args as { id?: string });
+      case "sui-get-package":
+        return getPackage(index, args as { package?: string });
+      default:
+        return text(`Unknown tool: ${name}`, true);
+    }
+  });
+}
