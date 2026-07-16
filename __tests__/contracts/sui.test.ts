@@ -8,7 +8,7 @@ import {
 } from "../common";
 import { getTitleText } from "@/contracts/prompts";
 import { SUI_INSTRUCTIONS } from "@/lib/sui/register";
-import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
+import { SUI_CONTENT_REF } from "@/lib/sui/loader";
 
 const SUI_TOOLS_NAMES = ["sui-list-recipes", "sui-get-recipe", "sui-get-package"];
 
@@ -47,7 +47,9 @@ it("Server should initialize a client session and serve Sui tools", async () => 
   expect(getTitleText("Sui")).toBe(
     responseInitializeText["result"]["serverInfo"]["name"]
   );
-  expect(contractsMcpPackage.version).toBe(
+  // The Sui server's data comes from contracts-sui at runtime, so its reported
+  // version is the pinned contracts-sui release (not the EVM npm package).
+  expect(SUI_CONTENT_REF.replace(/^v/, "")).toBe(
     responseInitializeText["result"]["serverInfo"]["version"]
   );
   expect(SUI_INSTRUCTIONS).toBe(

@@ -4,12 +4,17 @@
  * (the single source of truth) and caches it in-process. One tarball fetch, no
  * cron, no drift-check, no committed copy. Node runtime only (fetch + zlib).
  *
- * Two refs, on purpose:
- *  - CONTENT (examples, docs, AI metadata, catalog/READMEs) is read from `main`
- *    — the code doesn't differ across refs, but the best examples/docs/metadata
- *    live on `main`.
- *  - INSTALL pins (the git-dep `rev` for packages not on MVR) always point at
- *    the latest GitHub *release*, so scaffolds depend on released code.
+ * Content is pinned to a committed contracts-sui release tag, used both for the
+ * tarball we parse and for the `rev` of the git dependencies we synthesize. A
+ * pinned tag, rather than `main`, means:
+ *  - reviewed: the server only serves released code, and bumping it is a
+ *    committed, reviewable diff (like every other server's data bump here);
+ *  - consistent: examples and the `rev` that installs them come from one ref,
+ *    so a recipe can never reference an API its pinned dependency lacks;
+ *  - reproducible: the process-lifetime cache is exact, since tag tarballs are
+ *    immutable — `generatedFrom` names the precise content every replica serves.
+ * Bump `SUI_CONTENT_REF` on each contracts-sui release. `SUI_CONTRACTS_REF`
+ * overrides it for local testing against a branch or a newer tag.
  */
 
 import { gunzipSync } from "node:zlib";
@@ -19,34 +24,11 @@ import type { SuiIndex } from "./index.types";
 const REPO = "https://github.com/OpenZeppelin/contracts-sui";
 // The only top-level folders that hold packages in contracts-sui.
 const ROOTS = ["contracts", "math", "collections"];
-const CONTENT_REF = process.env.SUI_CONTRACTS_REF || "main";
-// Install pin used only when the latest-release lookup is unavailable (e.g. the
-// GitHub API rate-limits). Never fall back to a moving branch for install revs;
-// bump to the latest release tag on release.
-const FALLBACK_RELEASE = "v1.4.0";
-const TARBALL = `https://codeload.github.com/OpenZeppelin/contracts-sui/tar.gz/${CONTENT_REF}`;
-const RELEASES_API = "https://api.github.com/repos/OpenZeppelin/contracts-sui/releases/latest";
+// Pinned contracts-sui release. Bump on each release; override for testing.
+export const SUI_CONTENT_REF = process.env.SUI_CONTRACTS_REF || "v1.4.0";
+const TARBALL = `https://codeload.github.com/OpenZeppelin/contracts-sui/tar.gz/${SUI_CONTENT_REF}`;
 // GitHub rejects/throttles requests without a User-Agent; send one on every call.
 const USER_AGENT = "openzeppelin-mcp";
-
-/** Tag of the latest GitHub release — the install pin for git dependencies. */
-async function latestReleaseTag(): Promise<string | null> {
-  try {
-    const res = await fetch(RELEASES_API, {
-      headers: {
-        Accept: "application/vnd.github+json",
-        "User-Agent": USER_AGENT,
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-      signal: AbortSignal.timeout(20_000),
-    });
-    if (!res.ok) return null;
-    const json = (await res.json()) as { tag_name?: string };
-    return json.tag_name ?? null;
-  } catch {
-    return null;
-  }
-}
 
 /**
  * Minimal ustar reader: file contents keyed by repo-relative path (top-level
@@ -79,15 +61,11 @@ export function untar(buf: Buffer): Map<string, string> {
 }
 
 async function build(): Promise<SuiIndex> {
-  // Content from `main`; install pin from the latest GitHub release (or an
-  // explicit SUI_INSTALL_REF), falling back to a pinned release tag — never a
-  // moving branch — when the release lookup is unavailable.
-  const [res, releaseTag] = await Promise.all([
-    fetch(TARBALL, { headers: { "User-Agent": USER_AGENT }, signal: AbortSignal.timeout(20_000) }),
-    process.env.SUI_INSTALL_REF ? Promise.resolve(process.env.SUI_INSTALL_REF) : latestReleaseTag(),
-  ]);
+  const res = await fetch(TARBALL, {
+    headers: { "User-Agent": USER_AGENT },
+    signal: AbortSignal.timeout(20_000),
+  });
   if (!res.ok) throw new Error(`Failed to fetch ${TARBALL}: ${res.status} ${res.statusText}`);
-  const gitRev = releaseTag ?? FALLBACK_RELEASE;
   const files = untar(gunzipSync(Buffer.from(await res.arrayBuffer())));
 
   // Only look inside the package roots — ignore the rest of the repo.
@@ -119,9 +97,9 @@ async function build(): Promise<SuiIndex> {
   }
 
   return buildIndex(exampleFiles, packages, catalogReadmes, {
-    generatedFrom: `${REPO}@${CONTENT_REF}`,
+    generatedFrom: `${REPO}@${SUI_CONTENT_REF}`,
     repoGitUrl: `${REPO}.git`,
-    gitRev,
+    gitRev: SUI_CONTENT_REF,
   });
 }
 

@@ -160,7 +160,12 @@ export default function HomePage() {
       description:
         "Compose Sui Move smart contracts based on OpenZeppelin's audited primitives",
       url: `${BASE_URL}contracts/sui/mcp`,
-      npmMcpPackage: "@openzeppelin/contracts-mcp",
+      // This server's data comes from the contracts-sui repo at runtime, not
+      // from the @openzeppelin/contracts-mcp npm package — attribute the source.
+      poweredBy: {
+        label: "OpenZeppelin/contracts-sui",
+        href: "https://github.com/OpenZeppelin/contracts-sui",
+      },
     },
   ];
 

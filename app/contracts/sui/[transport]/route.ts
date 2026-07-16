@@ -1,7 +1,7 @@
 import { createMcpHandler } from "mcp-handler";
 import { registerSuiTools, SUI_INSTRUCTIONS } from "@/lib/sui/register";
 import { getTitleText } from "@/contracts/prompts";
-import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
+import { SUI_CONTENT_REF } from "@/lib/sui/loader";
 import { gaAnalyticsWrapper } from "@/libraries/ga-analytics-wrapper";
 
 const LANGUAGE = "Sui";
@@ -9,7 +9,9 @@ const LANGUAGE = "Sui";
 const serverOptions = {
   serverInfo: {
     name: getTitleText(LANGUAGE),
-    version: contractsMcpPackage.version,
+    // The data comes from contracts-sui at runtime, not from an npm package —
+    // report the pinned contracts-sui release the server is actually serving.
+    version: SUI_CONTENT_REF.replace(/^v/, ""),
   },
   capabilities: {
     tools: {
