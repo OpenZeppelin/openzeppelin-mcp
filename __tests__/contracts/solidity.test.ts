@@ -3,6 +3,7 @@ import {
   TEST_CLIENT_INITIALIZATION_REQUEST,
   TEST_CLIENT_INITIALIZED_REQUEST,
   TEST_CLIENT_TOOLS_LIST_REQUEST,
+  createResourcesReadRequest,
   parseJsonData,
   createRequest,
 } from "../common";
@@ -74,4 +75,33 @@ it("Server should initialize a client session and serve Solidity tools", async (
   const toolsNames = toolsList.map((tool) => tool.name);
   expect(toolsNames).toEqual(expect.arrayContaining(SOLIDITY_TOOLS_NAMES));
   expect(SOLIDITY_TOOLS_NAMES).toEqual(expect.arrayContaining(toolsNames));
+
+  const erc20 = toolsList.find((tool) => tool.name === "solidity-erc20");
+  expect(erc20?._meta?.ui?.resourceUri).toBe(
+    "ui://openzeppelin/solidity-erc20.html"
+  );
+});
+
+it("Server should serve MCP App HTML for solidity-erc20", async () => {
+  const requestInitialize = createRequest(
+    SOLIDITY_ENDPOINT,
+    TEST_CLIENT_INITIALIZATION_REQUEST
+  );
+  await POST(requestInitialize);
+  await POST(
+    createRequest(SOLIDITY_ENDPOINT, TEST_CLIENT_INITIALIZED_REQUEST)
+  );
+
+  const requestRead = createRequest(
+    SOLIDITY_ENDPOINT,
+    createResourcesReadRequest("ui://openzeppelin/solidity-erc20.html")
+  );
+  const responseRead = await POST(requestRead);
+  expect(responseRead.ok).toBe(true);
+  const payload = parseJsonData(await responseRead.text());
+  const contents = payload["result"]["contents"];
+  expect(contents[0].uri).toBe("ui://openzeppelin/solidity-erc20.html");
+  expect(contents[0].mimeType).toContain("text/html");
+  expect(contents[0].text).toContain("<!DOCTYPE html>");
+  expect(contents[0].text).toContain("<script>");
 });
