@@ -4,7 +4,9 @@ const nextConfig = {
   experimental: {
     esmExternals: true,
   },
-  turbopack: {},
+  turbopack: {
+    root: __dirname,
+  },
   webpack: (config) => {
     config.resolve.extensionAlias = {
       ".js": [".js", ".ts"],
