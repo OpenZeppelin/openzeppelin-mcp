@@ -9,7 +9,7 @@ import {
 import { getTitleText, getInstructionsText } from "@/contracts/prompts";
 import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
 
-const CONFIDENTIAL_TOOLS_NAMES = ["erc7984"];
+const CONFIDENTIAL_TOOLS_NAMES = ["confidential-erc7984"];
 
 const CONFIDENTIAL_ENDPOINT =
   "http://localhost:3000/contracts/confidential/mcp";

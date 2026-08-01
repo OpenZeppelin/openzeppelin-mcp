@@ -51,6 +51,22 @@ export const TEST_CLIENT_TOOLS_LIST_REQUEST = {
   }),
 };
 
+export function createResourcesReadRequest(uri: string) {
+  return {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json, text/event-stream",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: "test-id",
+      method: "resources/read",
+      params: { uri },
+    }),
+  };
+}
+
 export function parseJsonData(responseText: string): JSON {
   const dataLine = responseText
     .split("\n")

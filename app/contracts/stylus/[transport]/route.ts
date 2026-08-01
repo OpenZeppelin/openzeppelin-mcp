@@ -16,6 +16,7 @@ const serverOptions = {
     tools: {
       listChanged: true,
     },
+    resources: {},
     instructions: getInstructionsText(LANGUAGE),
   },
 };

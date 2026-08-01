@@ -5,7 +5,7 @@
     "": {
       "dependencies": {
         "@next/third-parties": "^16.0.7",
-        "@openzeppelin/contracts-mcp": "^0.5.10",
+        "@openzeppelin/contracts-mcp": "^0.6.0",
         "lucide-react": "^0.574.0",
         "mcp-handler": "^1.1.0",
         "next": "^16.2.6",
@@ -236,13 +236,13 @@
 
     "@noble/hashes": ["@noble/hashes@1.8.0", "", {}, "sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A=="],
 
-    "@openzeppelin/contracts-mcp": ["@openzeppelin/contracts-mcp@0.5.10", "", { "dependencies": { "@modelcontextprotocol/sdk": "^1.29.0", "@openzeppelin/wizard": "^0.10.10", "@openzeppelin/wizard-cairo": "^3.0.0", "@openzeppelin/wizard-common": "^0.5.3", "@openzeppelin/wizard-confidential": "^0.1.2", "@openzeppelin/wizard-stellar": "^0.6.3", "@openzeppelin/wizard-stylus": "^0.3.0", "@openzeppelin/wizard-uniswap-hooks": "^0.1.1" }, "bin": { "contracts-mcp": "dist/cli.js" } }, "sha512-/O00rKABjMZQOFuA1MGgMVAp6Lb4NcRMyndkk7xWIcL4oHfSsTxhxfOjltxa+JanKT7QX1seE9A9Gx+Z085V2Q=="],
+    "@openzeppelin/contracts-mcp": ["@openzeppelin/contracts-mcp@0.6.0", "", { "dependencies": { "@modelcontextprotocol/sdk": "^1.29.0", "@openzeppelin/wizard": "^0.10.12", "@openzeppelin/wizard-cairo": "^3.0.0", "@openzeppelin/wizard-common": "^0.5.4", "@openzeppelin/wizard-confidential": "^0.1.2", "@openzeppelin/wizard-stellar": "^0.6.3", "@openzeppelin/wizard-stylus": "^0.3.0", "@openzeppelin/wizard-uniswap-hooks": "^0.1.1" }, "bin": { "contracts-mcp": "dist/cli.js" } }, "sha512-0yZ2ONwESMyHyL3nXD60HjGhg/ApH49wa942i3YK2Dtygu+XlOlsyU8K/ftOJlwGeUbXRy4LBPrZxGUWVKHlqw=="],
 
-    "@openzeppelin/wizard": ["@openzeppelin/wizard@0.10.11", "", { "dependencies": { "ethereum-cryptography": "^3.2.0" } }, "sha512-jFJVJK7AnwKoYAvppNCrIbJoeO1QM1J+tZuZWlwa12pyxq2MkiDmfc2xQlOxoUtNKH/EDG62M1bqqHgmSu+3OA=="],
+    "@openzeppelin/wizard": ["@openzeppelin/wizard@0.10.12", "", { "dependencies": { "ethereum-cryptography": "^3.2.0" } }, "sha512-NbbHUZJFDW/mTnpLVkqaU34AwdkIfWC0vNRLEtC9IpVLVob728UARLdIIgOrrSB69V/ZmtcqBBlohig/hKWXbw=="],
 
     "@openzeppelin/wizard-cairo": ["@openzeppelin/wizard-cairo@3.0.0", "", {}, "sha512-6yZrBEq93QoOfxwhiRkDc4nFcjjOafgIU2LBLC72VeLopOJMxDb5nJslHMxMaMZH4UmNFjPC9QcgvSiEEmyUjg=="],
 
-    "@openzeppelin/wizard-common": ["@openzeppelin/wizard-common@0.5.3", "", { "dependencies": { "zod": "^4.0" } }, "sha512-XQEQm6MIAEWyixAZh5q/CVkaKk9qgJWiJwrE9E860yL+PNFahFmlqsqag8EX3ayeI4CcSUHHW3AzpQZIqdG/+Q=="],
+    "@openzeppelin/wizard-common": ["@openzeppelin/wizard-common@0.5.4", "", { "dependencies": { "zod": "^4.0" } }, "sha512-+nK1jBVfFBFwVTavRAA07XjgTTJTE/0uB+yELstDUPhwAc3+UbfnF2NyVq8Pa6qEVXdvbd4cTkeY4sdS1/EOGg=="],
 
     "@openzeppelin/wizard-confidential": ["@openzeppelin/wizard-confidential@0.1.2", "", { "dependencies": { "@openzeppelin/wizard": "^0.10.10" } }, "sha512-1LW2bHmqyFgql43LoeAChM+WVe2oa4lwomXzL54HA4xA2dF8xzpMVwyBN8ow3/iGGHQSQ5qgky1JzarPbRQ5Lw=="],
 
@@ -991,6 +991,10 @@
     "@jest/transform/chalk": ["chalk@4.1.2", "", { "dependencies": { "ansi-styles": "^4.1.0", "supports-color": "^7.1.0" } }, "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="],
 
     "@jest/types/chalk": ["chalk@4.1.2", "", { "dependencies": { "ansi-styles": "^4.1.0", "supports-color": "^7.1.0" } }, "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="],
+
+    "@openzeppelin/wizard-confidential/@openzeppelin/wizard": ["@openzeppelin/wizard@0.10.11", "", { "dependencies": { "ethereum-cryptography": "^3.2.0" } }, "sha512-jFJVJK7AnwKoYAvppNCrIbJoeO1QM1J+tZuZWlwa12pyxq2MkiDmfc2xQlOxoUtNKH/EDG62M1bqqHgmSu+3OA=="],
+
+    "@openzeppelin/wizard-uniswap-hooks/@openzeppelin/wizard": ["@openzeppelin/wizard@0.10.11", "", { "dependencies": { "ethereum-cryptography": "^3.2.0" } }, "sha512-jFJVJK7AnwKoYAvppNCrIbJoeO1QM1J+tZuZWlwa12pyxq2MkiDmfc2xQlOxoUtNKH/EDG62M1bqqHgmSu+3OA=="],
 
     "ansi-escapes/type-fest": ["type-fest@0.21.3", "", {}, "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w=="],
 

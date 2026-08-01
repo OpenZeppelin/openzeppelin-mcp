@@ -17,6 +17,7 @@ const serverOptions = {
     tools: {
       listChanged: true,
     },
+    resources: {},
     instructions: SUI_INSTRUCTIONS,
   },
 };
