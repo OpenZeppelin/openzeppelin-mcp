@@ -10,11 +10,12 @@ import { getTitleText, getInstructionsText } from "@/contracts/prompts";
 import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
 
 const STELLAR_TOOLS_NAMES = [
+  "stellar-account",
   "stellar-fungible",
   "stellar-non-fungible",
   "stellar-stablecoin",
   "stellar-governor",
-  "stellar-vault"
+  "stellar-vault",
 ];
 
 const STELLAR_ENDPOINT = "http://localhost:3000/contracts/stellar/mcp";
