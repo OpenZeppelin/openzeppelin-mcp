@@ -1,11 +1,11 @@
 import { CopyButton } from "@/components/CopyButton";
 
-export function WindsurfConfig({ name, url, currentTheme }) {
+export function WindsurfConfig({ serverName, url, currentTheme }) {
   const config = {
     filename: "~/.codeium/windsurf/mcp_config.json",
     code: `{
   "mcpServers": {
-    "OpenZeppelin${name.replace(/ /g, "")}": {
+    "${serverName}": {
         "serverUrl": "${url}"
     }
   }

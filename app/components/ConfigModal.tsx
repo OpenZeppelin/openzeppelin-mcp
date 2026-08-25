@@ -14,11 +14,14 @@ import { ClaudeCodeConfig } from "@/components/client-config-instructions/Claude
 import { CodexConfig } from "@/components/client-config-instructions/CodexConfig";
 import { WindsurfConfig } from "@/components/client-config-instructions/WindsurfConfig";
 import { GeminiCliConfig } from "@/components/client-config-instructions/GeminiCliConfig";
+import { getServerName } from "@/components/client-config-instructions/server-name";
 
 export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
   if (!isOpen || !mcp) return null;
 
   const [activeTab, setActiveTab] = useState("claude-code");
+
+  const serverName = getServerName(mcp);
 
   const tabs = [
     { id: "claude-code", label: "Claude Code", icon: ClaudeIcon },
@@ -38,21 +41,21 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
       case "cursor":
         return (
           <CursorConfig
-            name={mcp.name}
+            serverName={serverName}
             url={mcp.url}
             currentTheme={currentTheme}
           />
         );
       case "vscode":
-        return <VSCodeConfig name={mcp.name} url={mcp.url} />;
+        return <VSCodeConfig serverName={serverName} url={mcp.url} />;
       case "claude-code":
-        return <ClaudeCodeConfig name={mcp.name} url={mcp.url} />;
+        return <ClaudeCodeConfig serverName={serverName} url={mcp.url} />;
       case "codex":
-        return <CodexConfig name={mcp.name} url={mcp.url} />;
+        return <CodexConfig serverName={serverName} url={mcp.url} />;
       case "windsurf":
         return (
           <WindsurfConfig
-            name={mcp.name}
+            serverName={serverName}
             url={mcp.url}
             currentTheme={currentTheme}
           />
@@ -60,7 +63,7 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
       case "gemini-cli":
         return (
           <GeminiCliConfig
-            name={mcp.name}
+            serverName={serverName}
             url={mcp.url}
             currentTheme={currentTheme}
           />
@@ -68,7 +71,7 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
       default:
         return (
           <CursorConfig
-            name={mcp.name}
+            serverName={serverName}
             url={mcp.url}
             currentTheme={currentTheme}
           />

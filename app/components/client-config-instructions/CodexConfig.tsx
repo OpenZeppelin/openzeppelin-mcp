@@ -1,7 +1,6 @@
 import { CopyButton } from "@/components/CopyButton";
 
-export function CodexConfig({ name, url }) {
-  const serverName = `OpenZeppelin${name.replace(/ /g, "")}`;
+export function CodexConfig({ serverName, url }) {
   const config = {
     code: `codex mcp add ${serverName} --url ${url}`,
   };

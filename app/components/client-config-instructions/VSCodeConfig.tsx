@@ -1,8 +1,8 @@
 import { CopyButton } from "@/components/CopyButton";
 
-function AddToVSCode({ size = 32, name, url }) {
+function AddToVSCode({ size = 32, serverName, url }) {
   const jsonConfig = {
-    name: name,
+    name: serverName,
     type: "http",
     url: url,
   };
@@ -16,19 +16,19 @@ function AddToVSCode({ size = 32, name, url }) {
     >
       <img
         src="https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white"
-        alt={`Add ${name} MCP server to VS Code`}
+        alt={`Add ${serverName} MCP server to VS Code`}
         height={size}
       />
     </a>
   );
 }
 
-export function VSCodeConfig({ name, url }) {
+export function VSCodeConfig({ serverName, url }) {
   const config = {
     filename: ".vscode/mcp.json",
     code: `{
   "servers": {
-    "OpenZeppelin${name.replace(/ /g, "")}": {
+    "${serverName}": {
         "type": "http",
         "url": "${url}"
     }
@@ -40,10 +40,7 @@ export function VSCodeConfig({ name, url }) {
       <div className="config-content">
         <p>For quick setup, use the button below:</p>
         <div className="cursor-quick-install">
-          <AddToVSCode
-            name={`0penZeppelin${name.replace(/ /g, "")}`}
-            url={url}
-          />
+          <AddToVSCode serverName={serverName} url={url} />
         </div>
         <p>For manual setup:</p>
         <ol className="installation-steps">

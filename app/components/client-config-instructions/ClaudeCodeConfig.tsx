@@ -1,8 +1,8 @@
 import { CopyButton } from "@/components/CopyButton";
 
-export function ClaudeCodeConfig({ name, url }) {
+export function ClaudeCodeConfig({ serverName, url }) {
   const config = {
-    code: `claude mcp add -t http OpenZeppelin${name.replace(/ /g, "")} ${url}`,
+    code: `claude mcp add -t http ${serverName} ${url}`,
   };
   return (
     <div className="config-section">
