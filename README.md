@@ -12,13 +12,13 @@ For configuration instructions, visit [mcp.openzeppelin.com](https://mcp.openzep
 
 The following MCP servers are provided:
 
+- Solidity Contracts
 - Cairo Contracts
 - Confidential Contracts
-- Solidity Contracts
 - Stellar Contracts
 - Stylus Contracts
-- Sui Move Contracts
 - TRON Contracts
+- Sui Move Contracts
 - OpenZeppelin Uniswap Hooks
 
 These servers are hosted versions of the [OpenZeppelin Contracts MCP](https://github.com/OpenZeppelin/contracts-wizard/blob/master/packages/mcp/README.md) package, which can also be run locally by following the instructions in the linked readme.
