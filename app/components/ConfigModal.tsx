@@ -14,14 +14,13 @@ import { ClaudeCodeConfig } from "@/components/client-config-instructions/Claude
 import { CodexConfig } from "@/components/client-config-instructions/CodexConfig";
 import { WindsurfConfig } from "@/components/client-config-instructions/WindsurfConfig";
 import { GeminiCliConfig } from "@/components/client-config-instructions/GeminiCliConfig";
-import { getServerName } from "@/components/client-config-instructions/server-name";
 
 export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
   if (!isOpen || !mcp) return null;
 
   const [activeTab, setActiveTab] = useState("claude-code");
 
-  const serverName = getServerName(mcp);
+  const { serverName } = mcp;
 
   const tabs = [
     { id: "claude-code", label: "Claude Code", icon: ClaudeIcon },
