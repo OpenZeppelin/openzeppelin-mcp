@@ -17,6 +17,7 @@ The following MCP servers are provided:
 - Confidential Contracts
 - Stellar Contracts
 - Stylus Contracts
+- TRON Contracts
 - Sui Move Contracts
 - OpenZeppelin Uniswap Hooks
 

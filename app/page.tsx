@@ -11,6 +11,7 @@ import {
   ConfidentialIcon,
   StellarIcon,
   StylusIcon,
+  TronIcon,
   UniswapHooksIcon,
   SuiIcon,
 } from "@/components/icons";
@@ -108,6 +109,7 @@ export default function HomePage() {
   const AVAILABLE_MCPS = [
     {
       name: "Solidity Contracts",
+      serverName: "OpenZeppelinSolidityContracts",
       icon: SolidityIcon,
       description:
         "Generate Solidity secure smart contracts based on OpenZeppelin templates",
@@ -116,6 +118,7 @@ export default function HomePage() {
     },
     {
       name: "Cairo Contracts",
+      serverName: "OpenZeppelinCairoContracts",
       icon: CairoIcon,
       description:
         "Generate Cairo secure smart contracts based on OpenZeppelin templates",
@@ -124,6 +127,7 @@ export default function HomePage() {
     },
     {
       name: "Confidential Contracts",
+      serverName: "OpenZeppelinConfidentialContracts",
       icon: ConfidentialIcon,
       description:
         "Generate Confidential secure smart contracts based on OpenZeppelin templates",
@@ -132,6 +136,7 @@ export default function HomePage() {
     },
     {
       name: "Stellar Contracts",
+      serverName: "OpenZeppelinStellarContracts",
       icon: StellarIcon,
       description:
         "Generate Stellar secure smart contracts based on OpenZeppelin templates",
@@ -140,6 +145,7 @@ export default function HomePage() {
     },
     {
       name: "Stylus Contracts",
+      serverName: "OpenZeppelinStylusContracts",
       icon: StylusIcon,
       description:
         "Generate Stylus secure smart contracts based on OpenZeppelin templates",
@@ -147,7 +153,17 @@ export default function HomePage() {
       npmMcpPackage: "@openzeppelin/contracts-mcp",
     },
     {
+      name: "TRON Contracts",
+      serverName: "OpenZeppelinTronContracts",
+      icon: TronIcon,
+      description:
+        "Generate TRON secure smart contracts based on OpenZeppelin templates",
+      url: `${BASE_URL}contracts/tron/mcp`,
+      npmMcpPackage: "@openzeppelin/contracts-mcp",
+    },
+    {
       name: "Uniswap Hooks",
+      serverName: "OpenZeppelinUniswapHooks",
       icon: UniswapHooksIcon,
       description:
         "Generate Uniswap Hooks secure smart contracts based on OpenZeppelin templates",
@@ -156,6 +172,7 @@ export default function HomePage() {
     },
     {
       name: "Sui Contracts",
+      serverName: "OpenZeppelinSuiContracts",
       icon: SuiIcon,
       description:
         "Compose Sui Move smart contracts based on OpenZeppelin's audited primitives",

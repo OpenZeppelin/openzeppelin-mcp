@@ -1,13 +1,13 @@
 import { CopyButton } from "@/components/CopyButton";
 
-export function GeminiCliConfig({ name, url, currentTheme }) {
+export function GeminiCliConfig({ serverName, url, currentTheme }) {
   const config = {
     filename: "~/.gemini/settings.json",
     code: `{
   //other settings...
 
   "mcpServers": {
-    "OpenZeppelin${name.replace(/ /g, "")}": {
+    "${serverName}": {
         "httpUrl": "${url}"
     }
   }

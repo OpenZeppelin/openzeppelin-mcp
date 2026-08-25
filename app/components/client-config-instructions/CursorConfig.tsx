@@ -1,6 +1,11 @@
 import { CopyButton } from "@/components/CopyButton";
 
-function AddToCursorButton({ size = 32, name, url, currentTheme = "light" }) {
+function AddToCursorButton({
+  size = 32,
+  serverName,
+  url,
+  currentTheme = "light",
+}) {
   const configJson = {
     type: "streamable-http",
     url: url,
@@ -9,25 +14,25 @@ function AddToCursorButton({ size = 32, name, url, currentTheme = "light" }) {
   const encodedConfig = btoa(JSON.stringify(configJson));
   return (
     <a
-      href={`cursor://anysphere.cursor-deeplink/mcp/install?name=${name}&config=${encodedConfig}`}
+      href={`cursor://anysphere.cursor-deeplink/mcp/install?name=${serverName}&config=${encodedConfig}`}
     >
       <img
         src={`https://cursor.com/deeplink/mcp-install-${
           currentTheme === "light" ? "dark" : "light"
         }.svg`}
-        alt={`Add ${name} MCP server to Cursor`}
+        alt={`Add ${serverName} MCP server to Cursor`}
         height={size}
       />
     </a>
   );
 }
 
-export function CursorConfig({ name, url, currentTheme }) {
+export function CursorConfig({ serverName, url, currentTheme }) {
   const config = {
     filename: "~/.cursor/mcp.json",
     code: `{
   "mcpServers": {
-    "OpenZeppelin${name.replace(/ /g, "")}": {
+    "${serverName}": {
         "type": "streamable-http",
         "url": "${url}"
     }
@@ -41,7 +46,7 @@ export function CursorConfig({ name, url, currentTheme }) {
         <p>For quick setup, use the button below:</p>
         <div className="cursor-quick-install">
           <AddToCursorButton
-            name={`OpenZeppelin${name.replace(/ /g, "")}`}
+            serverName={serverName}
             url={url}
             currentTheme={currentTheme}
           />

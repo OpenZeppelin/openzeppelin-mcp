@@ -20,6 +20,8 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
 
   const [activeTab, setActiveTab] = useState("claude-code");
 
+  const { serverName } = mcp;
+
   const tabs = [
     { id: "claude-code", label: "Claude Code", icon: ClaudeIcon },
     { id: "codex", label: "Codex", icon: CodexIcon },
@@ -38,21 +40,21 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
       case "cursor":
         return (
           <CursorConfig
-            name={mcp.name}
+            serverName={serverName}
             url={mcp.url}
             currentTheme={currentTheme}
           />
         );
       case "vscode":
-        return <VSCodeConfig name={mcp.name} url={mcp.url} />;
+        return <VSCodeConfig serverName={serverName} url={mcp.url} />;
       case "claude-code":
-        return <ClaudeCodeConfig name={mcp.name} url={mcp.url} />;
+        return <ClaudeCodeConfig serverName={serverName} url={mcp.url} />;
       case "codex":
-        return <CodexConfig name={mcp.name} url={mcp.url} />;
+        return <CodexConfig serverName={serverName} url={mcp.url} />;
       case "windsurf":
         return (
           <WindsurfConfig
-            name={mcp.name}
+            serverName={serverName}
             url={mcp.url}
             currentTheme={currentTheme}
           />
@@ -60,7 +62,7 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
       case "gemini-cli":
         return (
           <GeminiCliConfig
-            name={mcp.name}
+            serverName={serverName}
             url={mcp.url}
             currentTheme={currentTheme}
           />
@@ -68,7 +70,7 @@ export function ConfigModal({ isOpen, onClose, mcp, currentTheme }) {
       default:
         return (
           <CursorConfig
-            name={mcp.name}
+            serverName={serverName}
             url={mcp.url}
             currentTheme={currentTheme}
           />
