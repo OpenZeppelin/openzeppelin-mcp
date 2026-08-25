@@ -6,13 +6,14 @@ import Image from "next/image";
 import {
   ThemeIcon,
   GitHubIcon,
-  SolidityIcon,
   CairoIcon,
   ConfidentialIcon,
+  SolidityIcon,
   StellarIcon,
   StylusIcon,
-  UniswapHooksIcon,
   SuiIcon,
+  TronIcon,
+  UniswapHooksIcon,
 } from "@/components/icons";
 import { ConfigModal } from "@/components/ConfigModal";
 
@@ -107,14 +108,6 @@ export default function HomePage() {
 
   const AVAILABLE_MCPS = [
     {
-      name: "Solidity Contracts",
-      icon: SolidityIcon,
-      description:
-        "Generate Solidity secure smart contracts based on OpenZeppelin templates",
-      url: `${BASE_URL}contracts/solidity/mcp`,
-      npmMcpPackage: "@openzeppelin/contracts-mcp",
-    },
-    {
       name: "Cairo Contracts",
       icon: CairoIcon,
       description:
@@ -128,6 +121,14 @@ export default function HomePage() {
       description:
         "Generate Confidential secure smart contracts based on OpenZeppelin templates",
       url: `${BASE_URL}contracts/confidential/mcp`,
+      npmMcpPackage: "@openzeppelin/contracts-mcp",
+    },
+    {
+      name: "Solidity Contracts",
+      icon: SolidityIcon,
+      description:
+        "Generate Solidity secure smart contracts based on OpenZeppelin templates",
+      url: `${BASE_URL}contracts/solidity/mcp`,
       npmMcpPackage: "@openzeppelin/contracts-mcp",
     },
     {
@@ -147,14 +148,6 @@ export default function HomePage() {
       npmMcpPackage: "@openzeppelin/contracts-mcp",
     },
     {
-      name: "Uniswap Hooks",
-      icon: UniswapHooksIcon,
-      description:
-        "Generate Uniswap Hooks secure smart contracts based on OpenZeppelin templates",
-      url: `${BASE_URL}contracts/uniswap-hooks/mcp`,
-      npmMcpPackage: "@openzeppelin/contracts-mcp",
-    },
-    {
       name: "Sui Contracts",
       icon: SuiIcon,
       description:
@@ -166,6 +159,24 @@ export default function HomePage() {
         label: "OpenZeppelin/contracts-sui",
         href: "https://github.com/OpenZeppelin/contracts-sui",
       },
+    },
+    {
+      name: "TRON Contracts",
+      // TRON is stylized in prose, but config keys stay PascalCase.
+      configName: "Tron Contracts",
+      icon: TronIcon,
+      description:
+        "Generate TRON secure smart contracts based on OpenZeppelin templates",
+      url: `${BASE_URL}contracts/tron/mcp`,
+      npmMcpPackage: "@openzeppelin/contracts-mcp",
+    },
+    {
+      name: "Uniswap Hooks",
+      icon: UniswapHooksIcon,
+      description:
+        "Generate Uniswap Hooks secure smart contracts based on OpenZeppelin templates",
+      url: `${BASE_URL}contracts/uniswap-hooks/mcp`,
+      npmMcpPackage: "@openzeppelin/contracts-mcp",
     },
   ];
 

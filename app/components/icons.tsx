@@ -664,3 +664,22 @@ export function SuiIcon({ theme }) {
     </svg>
   );
 }
+
+export function TronIcon({}) {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5 5L27 9L13 27L5 5ZM5 5L18 15L27 9M18 15L13 27"
+        stroke="#FF060A"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
