@@ -13,6 +13,7 @@ const CAIRO_TOOLS_NAMES = [
   "cairo-erc20",
   "cairo-erc721",
   "cairo-erc1155",
+  "cairo-erc6909",
   "cairo-account",
   "cairo-multisig",
   "cairo-governor",
