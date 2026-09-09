@@ -5,7 +5,7 @@
     "": {
       "dependencies": {
         "@next/third-parties": "^16.0.7",
-        "@openzeppelin/contracts-mcp": "^0.7.0",
+        "@openzeppelin/contracts-mcp": "^0.7.1",
         "lucide-react": "^0.574.0",
         "mcp-handler": "^1.1.0",
         "next": "^16.2.6",
@@ -236,17 +236,17 @@
 
     "@noble/hashes": ["@noble/hashes@1.8.0", "", {}, "sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A=="],
 
-    "@openzeppelin/contracts-mcp": ["@openzeppelin/contracts-mcp@0.7.0", "", { "dependencies": { "@modelcontextprotocol/sdk": "^1.29.0", "@openzeppelin/wizard": "^0.10.14", "@openzeppelin/wizard-cairo": "^4.0.0", "@openzeppelin/wizard-common": "^0.5.8", "@openzeppelin/wizard-confidential": "^0.1.2", "@openzeppelin/wizard-stellar": "^0.6.4", "@openzeppelin/wizard-stylus": "^0.3.0", "@openzeppelin/wizard-uniswap-hooks": "^0.1.1" }, "bin": { "contracts-mcp": "dist/cli.js" } }, "sha512-necVQXAnIZCiwh6NyAvLLZoy6VERFSjcK5VSY8jZnkZuaWCzMOtlH774nKPAG/V+3A+KPoxhNubKfTPYLeDuDQ=="],
+    "@openzeppelin/contracts-mcp": ["@openzeppelin/contracts-mcp@0.7.1", "", { "dependencies": { "@modelcontextprotocol/sdk": "^1.29.0", "@openzeppelin/wizard": "^0.10.16", "@openzeppelin/wizard-cairo": "^4.1.0", "@openzeppelin/wizard-common": "^0.5.9", "@openzeppelin/wizard-confidential": "^0.1.2", "@openzeppelin/wizard-stellar": "^0.6.5", "@openzeppelin/wizard-stylus": "^0.3.0", "@openzeppelin/wizard-uniswap-hooks": "^0.1.1" }, "bin": { "contracts-mcp": "dist/cli.js" } }, "sha512-1de+1OLQmI8G92yfR4Q7WXE14Xt27DCocbmYXZu5v84UM6svlqm6rktnn0YIJaVjLcmJ9KDFHP1zb4/pJo9F1w=="],
 
-    "@openzeppelin/wizard": ["@openzeppelin/wizard@0.10.14", "", { "dependencies": { "ethereum-cryptography": "^3.2.0" } }, "sha512-OVlt0Lnp0u32yv0PM0WjTQr5hSydoUuNPB3aT2OKK3IlEfxsar4zrHzcZoWlA2RgnnP2V5mYPE79cqkjxD13zQ=="],
+    "@openzeppelin/wizard": ["@openzeppelin/wizard@0.10.16", "", { "dependencies": { "ethereum-cryptography": "^3.2.0" } }, "sha512-zpeixSNxZsDUQS6yPZ33A2B6CBXRJAY8SjGHpSatJ7f0uxRX5vBH1eaPwfGgrv0mFPtl5g+vpfUKu19KOgdXKA=="],
 
-    "@openzeppelin/wizard-cairo": ["@openzeppelin/wizard-cairo@4.0.0", "", {}, "sha512-T9BZgzCB6pauLc/s7ABJgz9CwbXkNNEtztDRLzN+q6n2oM4ezzOsKyNgtj9hEpD9FOtZXUCkJ54YwR+STRA9vQ=="],
+    "@openzeppelin/wizard-cairo": ["@openzeppelin/wizard-cairo@4.1.0", "", {}, "sha512-+lbGyIjS2IF6yAd6T1j0GHuY2BW7roezP6XosdhVdqx3Rxzfz9q3ml13HuFY9LjSBPS9KnUC2WptMm9jA0TACQ=="],
 
-    "@openzeppelin/wizard-common": ["@openzeppelin/wizard-common@0.5.8", "", { "dependencies": { "zod": "^4.0" } }, "sha512-7Meo9nHyed8ET91+sI2cMMbVGEAgMRESZbtq4BbmLg+sCjsReiDB5bfgOR76pb8bJJSCjC2EpsLH5humGgTonQ=="],
+    "@openzeppelin/wizard-common": ["@openzeppelin/wizard-common@0.5.9", "", { "dependencies": { "zod": "^4.0" } }, "sha512-8zojb3WnMRqBk2dpaGMle92itQ9PDM/b1z7sDXqApiv2GFKIHrspjBtmb2RU+9r9I7MaTWEFKhVj5vPMPOwW2Q=="],
 
     "@openzeppelin/wizard-confidential": ["@openzeppelin/wizard-confidential@0.1.2", "", { "dependencies": { "@openzeppelin/wizard": "^0.10.10" } }, "sha512-1LW2bHmqyFgql43LoeAChM+WVe2oa4lwomXzL54HA4xA2dF8xzpMVwyBN8ow3/iGGHQSQ5qgky1JzarPbRQ5Lw=="],
 
-    "@openzeppelin/wizard-stellar": ["@openzeppelin/wizard-stellar@0.6.4", "", {}, "sha512-oE8P5dRQKMIWvNwNmpGh0t/XvlCYilSCO3XnsvhYm/2i11oe0lImpXaml4xi/LBPq5f2fE8+FPjnNJsuINGxtQ=="],
+    "@openzeppelin/wizard-stellar": ["@openzeppelin/wizard-stellar@0.6.5", "", {}, "sha512-6nQrLAeF22CL6efoVt3VawJEArtMnZhYGuZUGRN/ft/80tzAEWN1z/aeDfPfi7+yRF7nquw82OCXGkAHxWqJOg=="],
 
     "@openzeppelin/wizard-stylus": ["@openzeppelin/wizard-stylus@0.3.0", "", {}, "sha512-ditmFBYs9wMh0edY1+N43Mfuvgaq26EKOdmI/Fk3lE7SZryPeln28+der6Q5pFot2aJOfXGJRLK3Vlkmmh7wQg=="],
 
