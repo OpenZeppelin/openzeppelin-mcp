@@ -55,8 +55,11 @@ it("Server should initialize a client session and serve TRON tools", async () =>
     responseInitializeText["result"]["serverInfo"]["version"]
   );
   expect(getInstructionsText("TRON")).toBe(
-    responseInitializeText["result"]["capabilities"]["instructions"]
+    responseInitializeText["result"]["instructions"]
   );
+  expect(
+    responseInitializeText["result"]["capabilities"]["instructions"]
+  ).toBeUndefined();
 
   const requestToolsList = createRequest(
     TRON_ENDPOINT,

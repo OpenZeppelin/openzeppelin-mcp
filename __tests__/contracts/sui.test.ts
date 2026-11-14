@@ -53,8 +53,11 @@ it("Server should initialize a client session and serve Sui tools", async () => 
     responseInitializeText["result"]["serverInfo"]["version"]
   );
   expect(SUI_INSTRUCTIONS).toBe(
-    responseInitializeText["result"]["capabilities"]["instructions"]
+    responseInitializeText["result"]["instructions"]
   );
+  expect(
+    responseInitializeText["result"]["capabilities"]["instructions"]
+  ).toBeUndefined();
 
   // Assert that available tools are the Sui tools
   const requestToolsList = createRequest(

@@ -13,12 +13,12 @@ const serverOptions = {
     // report the pinned contracts-sui release the server is actually serving.
     version: SUI_CONTENT_REF.replace(/^v/, ""),
   },
+  instructions: SUI_INSTRUCTIONS,
   capabilities: {
     tools: {
       listChanged: true,
     },
     resources: {},
-    instructions: SUI_INSTRUCTIONS,
   },
 };
 

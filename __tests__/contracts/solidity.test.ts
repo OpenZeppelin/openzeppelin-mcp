@@ -60,8 +60,11 @@ it("Server should initialize a client session and serve Solidity tools", async (
     responseInitializeText["result"]["serverInfo"]["version"]
   );
   expect(getInstructionsText("Solidity")).toBe(
-    responseInitializeText["result"]["capabilities"]["instructions"]
+    responseInitializeText["result"]["instructions"]
   );
+  expect(
+    responseInitializeText["result"]["capabilities"]["instructions"]
+  ).toBeUndefined();
 
   // Assert that available tools are the Solidity tools
   const requestToolsList = createRequest(

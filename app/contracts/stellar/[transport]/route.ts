@@ -12,12 +12,12 @@ const serverOptions = {
     name: getTitleText(LANGUAGE),
     version: contractsMcpPackage.version,
   },
+  instructions: getInstructionsText(LANGUAGE),
   capabilities: {
     tools: {
       listChanged: true,
     },
     resources: {},
-    instructions: getInstructionsText(LANGUAGE),
   },
 };
 
