@@ -57,8 +57,11 @@ it("Server should initialize a client session and serve Stellar tools", async ()
     responseInitializeText["result"]["serverInfo"]["version"]
   );
   expect(getInstructionsText("Stellar")).toBe(
-    responseInitializeText["result"]["capabilities"]["instructions"]
+    responseInitializeText["result"]["instructions"]
   );
+  expect(
+    responseInitializeText["result"]["capabilities"]["instructions"]
+  ).toBeUndefined();
 
   // Assert that available tools are the Stellar tools
   const requestToolsList = createRequest(

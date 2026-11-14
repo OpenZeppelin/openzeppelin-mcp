@@ -51,8 +51,11 @@ it("Server should initialize a client session and serve Uniswap Hooks tools", as
     responseInitializeText["result"]["serverInfo"]["version"]
   );
   expect(getInstructionsText("Uniswap Hooks")).toBe(
-    responseInitializeText["result"]["capabilities"]["instructions"]
+    responseInitializeText["result"]["instructions"]
   );
+  expect(
+    responseInitializeText["result"]["capabilities"]["instructions"]
+  ).toBeUndefined();
 
   // Assert that available tools are the Uniswap Hooks tools
   const requestToolsList = createRequest(

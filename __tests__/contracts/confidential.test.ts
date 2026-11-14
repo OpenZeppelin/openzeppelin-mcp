@@ -51,8 +51,11 @@ it("Server should initialize a client session and serve Confidential tools", asy
     responseInitializeText["result"]["serverInfo"]["version"]
   );
   expect(getInstructionsText("Confidential")).toBe(
-    responseInitializeText["result"]["capabilities"]["instructions"]
+    responseInitializeText["result"]["instructions"]
   );
+  expect(
+    responseInitializeText["result"]["capabilities"]["instructions"]
+  ).toBeUndefined();
 
   // Assert that available tools are the Confidential tools
   const requestToolsList = createRequest(
