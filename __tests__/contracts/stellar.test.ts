@@ -70,6 +70,8 @@ it("Server should initialize a client session and serve Stellar tools", async ()
     "tools"
   ];
   const toolsNames = toolsList.map((tool) => tool.name);
-  expect(toolsNames).toEqual(expect.arrayContaining(STELLAR_TOOLS_NAMES));
-  expect(STELLAR_TOOLS_NAMES).toEqual(expect.arrayContaining(toolsNames));
+  // Compare the full, order-independent sets instead of using two-way
+  // `arrayContaining`, which treats duplicate entries as a match and therefore
+  // let the improperly updated list from issue #87 pass.
+  expect([...toolsNames].sort()).toEqual([...STELLAR_TOOLS_NAMES].sort());
 });
