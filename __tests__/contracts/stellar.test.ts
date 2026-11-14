@@ -73,3 +73,11 @@ it("Server should initialize a client session and serve Stellar tools", async ()
   expect(toolsNames).toEqual(expect.arrayContaining(STELLAR_TOOLS_NAMES));
   expect(STELLAR_TOOLS_NAMES).toEqual(expect.arrayContaining(toolsNames));
 });
+
+it("Stellar instructions explain that the generated source needs a Cargo project", () => {
+  const instructions = getInstructionsText("Stellar");
+
+  expect(instructions).toContain("Cargo.toml");
+  expect(instructions).toContain("src/lib.rs");
+  expect(instructions).toMatch(/cargo project/i);
+});
