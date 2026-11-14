@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY bun.lock package.json ./
-RUN bun install
+RUN bun install --frozen-lockfile
 
 # Build the Next.js app
 COPY next-env.d.ts next.config.js tsconfig.json ./
