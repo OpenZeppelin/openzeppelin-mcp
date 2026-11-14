@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { loadSuiIndex } from "./loader";
 import type { PackageInfo, SuiIndex } from "./index.types";
+import { READ_ONLY_TOOL_ANNOTATIONS } from "../tool-annotations";
 
 /**
  * The Sui server: a thin, deterministic data layer over `contracts-sui`'s
@@ -73,6 +74,7 @@ function json(value: unknown): ToolResult {
 const TOOLS = [
   {
     name: "sui-list-recipes",
+    annotations: READ_ONLY_TOOL_ANNOTATIONS,
     description:
       "Discovery entry point. Lists available composition recipes (id, summary, " +
       "packages used, and whether all its packages are published on the Move Registry) " +
@@ -91,6 +93,7 @@ const TOOLS = [
   },
   {
     name: "sui-get-recipe",
+    annotations: READ_ONLY_TOOL_ANNOTATIONS,
     description:
       "Returns a full recipe by `id`: the scenario file plus any local support files, " +
       "verbatim, with the packages it uses (and how each is installed), links (docs / audits " +
@@ -106,6 +109,7 @@ const TOOLS = [
   },
   {
     name: "sui-get-package",
+    annotations: READ_ONLY_TOOL_ANNOTATIONS,
     description:
       "Returns metadata for one OZ package (namespace, MVR slug, docs, audits, source URL) and " +
       "the dependency line from its README — `r.mvr` when it is published on the Move Registry, " +

@@ -4,6 +4,7 @@ import { getTitleText } from "@/contracts/prompts";
 import { getInstructionsText } from "@/contracts/prompts";
 import contractsMcpPackage from "@openzeppelin/contracts-mcp/package.json";
 import { gaAnalyticsWrapper } from "@/libraries/ga-analytics-wrapper";
+import { withToolAnnotations } from "@/lib/tool-annotations";
 
 const LANGUAGE = "Stellar";
 
@@ -29,7 +30,7 @@ const serverConfig = {
 
 const mcpHandler = createMcpHandler(
   async (server) => {
-    registerStellarTools(server);
+    registerStellarTools(withToolAnnotations(server));
   },
   serverOptions,
   serverConfig
